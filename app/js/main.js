@@ -75,6 +75,13 @@ $(document).ready(function() {
    if(savedscore != "")
       highscore = parseInt(savedscore);
    
+   //get userName
+   var arrParameter = [];
+   arrParameter = parseParameter(document.URL);
+   var userName = getParaValue(arrParameter,"userName");
+   comLogin(userName, 0, null);
+
+
    //start with the splash screen
    showSplash();
 });
