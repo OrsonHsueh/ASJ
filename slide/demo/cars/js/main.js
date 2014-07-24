@@ -79,6 +79,7 @@ function startGame()
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
    loopPipeloop = setInterval(updatePipes, 5000);
+   comSetMoveCallback(updatePlayer);
 }
 
 function updatePlayer(player,position)
@@ -172,13 +173,7 @@ $(document).keydown(function(e){
    else if( e.keyCode == 81)
    {
    	//play jump sound
-      comMove(function(num,postition){
-         console.log(num);
-         console.log(position);
-         //update player position
-         updatePlayer(num,position);
-
-      });
+      comMove(1);
    	soundJump.stop();
    	soundJump.play();
 
@@ -196,13 +191,7 @@ $(document).keydown(function(e){
    else if( e.keyCode == 87)
    {
         //play jump sound
-        comMove(function(num,position){
-         console.log(num);
-         console.log(position);
-         //update player position
-         updatePlayer(num,position);
-
-        });
+        comMove(1);
         soundJump.stop();
         soundJump.play();
 
@@ -220,13 +209,7 @@ $(document).keydown(function(e){
    else if( e.keyCode == 69)
    {
         //play jump sound
-        comMove(function(num,position){
-            console.log(num);
-            console.log(position);
-            //update player position
-            updatePlayer(num,position);
-
-        };);
+        comMove(1);
         soundJump.stop();
         soundJump.play();
 
@@ -316,7 +299,7 @@ function screenClick()
 
             setTimeout(function() {
               $("#goicon").hide();
-	           startGame();
+	           //startGame();
             }, 1000);
 
             comReady();

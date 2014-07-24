@@ -32,7 +32,7 @@ function comSetGoCallback(callback){
 
 /* 宣告自己移動的位置 0 ~ 100 */
 function comMove(position){
-  SOCKET.send(JSON.stringify({'act':'ready', 'pos':position}));
+  SOCKET.send(JSON.stringify({'act':'pos', 'pos':position}));
 }
 
 /* 當有其他人移動時，就會呼叫這個 callback 傳入值：賽道、position */
