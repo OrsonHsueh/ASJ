@@ -24,6 +24,9 @@ GameServer = None
 
 class RaceGame(WebSocketHandler):
   
+  def check_origin(self, org):
+    return True
+
   def open(self):
     logger.info('someone logged in')
 
