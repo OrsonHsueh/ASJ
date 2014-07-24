@@ -2,7 +2,8 @@
 var states = Object.freeze({
    SplashScreen: 0,
    GameScreen: 1,
-   ScoreScreen: 2
+   ScoreScreen: 2,
+   CountScreen: 3
 });
 
 var currentstate;
@@ -66,16 +67,10 @@ function startGame()
 {
    currentstate = states.GameScreen;
 
-   //fade out the splash
-   $("#splash").stop();
-   $("#splash").transition({ opacity: 0 }, 500, 'ease');
-
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
    loopPipeloop = setInterval(updatePipes, 5000);
-   //jump from the start!
-   playerJump();
 }
 
 function updatePlayer(player)
@@ -144,6 +139,7 @@ function gameloop() {
 
 }
 
+/*
 //Handle space bar
 $(document).keydown(function(e){
    //space bar!
@@ -153,7 +149,7 @@ $(document).keydown(function(e){
       if(currentstate != states.ScoreScreen)
          screenClick();
    }
-});
+});*/
 
 //Handle mouse down OR touch start
 if("ontouchstart" in window)
@@ -170,9 +166,9 @@ function screenClick()
    }
    else if(currentstate == states.SplashScreen)
    {
+      currentstate = states.CountScreen;
       $("#splash").stop();
       $("#splash").transition({ opacity: 0 }, 500, 'ease');
-
 
       var stop=window.setInterval(function(){
          count++;
@@ -184,7 +180,6 @@ function screenClick()
             window.clearInterval(stop);
             count=0;
           }
-
       }, 1000);
 
       $("#countdown").countdown360({
@@ -192,25 +187,17 @@ function screenClick()
          seconds     : 3,
          fontColor   : '#FFFFFF',
          autostart   : false,
-      onComplete  : function () { 
-         $("#countdown").hide();
-         $("#goicon").show();
-         soundGo.play();
-      
+      	 onComplete  : function () { 
+           $("#countdown").hide();
+           $("#goicon").show();
+           soundGo.play();
 
-            setTimeout(function() {
-               // Do something after 5 seconds
-                  $("#goicon").hide();
-            }, 1000);
-
+           setTimeout(function() {
+             $("#goicon").hide();
+	     startGame();
+           }, 1000);
          }
       }).start();
-
-
-      setTimeout(function() {
-         // Do something after 5 seconds
-            startGame();
-      }, 5000);
    }
 }
 
