@@ -3,9 +3,12 @@ var SOCKET = null;
  * 回傳一個代碼，代表在第幾賽道  **** 更新，用 callback 傳回 ****
  */
 function comLogin(name, car, callback){
- SOCKET = new WebSocket("ws://10.62.46.48:20666/");
- MSG_CALLBACKS.login = callback;
- SOCKET.onmessage = serverMsg;
+  SOCKET = new WebSocket("ws://10.62.46.48:20666/");
+  SOCKET.onmessage = serverMsg;
+  SOCKET.onopen = function(e){
+    SOCKET.send(JSON.stringify({'act': 'login', 'name': name, 'car':car}));
+  };
+  MSG_CALLBACKS.login = callback;
 }
 
 
@@ -29,7 +32,7 @@ function comSetGoCallback(callback){
 
 /* 宣告自己移動的位置 0 ~ 100 */
 function comMove(position){
-  SOCKET.send(JSON.stringify({'act':'ready', 'pos':position}));
+  SOCKET.send(JSON.stringify({'act':'pos', 'pos':position}));
 }
 
 /* 當有其他人移動時，就會呼叫這個 callback 傳入值：賽道、position */
@@ -92,8 +95,8 @@ var cmdHandlers = {
 
 function serverMsg(e){
   cmd = JSON.parse(e.data);
-  if(cmdHandlers.hasAttribute(cmd['act'])){
-    cmdHandlers[cmd['act']]();
+  if(cmdHandlers.hasOwnProperty(cmd['act'])){
+    cmdHandlers[cmd['act']](cmd);
   }else{
     console.err('unkown cmd: %s', e.data);
   }
