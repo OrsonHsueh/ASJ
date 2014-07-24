@@ -471,6 +471,23 @@ function playerDead()
    loopPipeloop = null;
    loopFruitloop = null;
 
+   //direct end.html
+   var result = [{'name': 'tony1', 'car': 0, 'pos': 0}, {'name': 'tony2', 'car': 0, 'pos': 1}, 
+   {'name': 'tony3', 'car': 0, 'pos': 0}];
+   var parmString = "";
+   //alert(result.length);
+   for (var i=0; i<result.length; i++) {
+      //alert(result[i].name);
+      if (i == result.length - 1) {
+         parmString = parmString + "userName" + (i+1) + "#" + result[i].name;   
+      }else {
+         parmString = parmString + "userName" + (i+1) + "#" + result[i].name + "&";   
+      }
+      
+   }
+   //alert(parmString);
+   window.open("end.html" + "?" + parmString, '_self');
+
    //mobile browsers don't support buzz bindOnce event
    if(isIncompatible.any())
    {
