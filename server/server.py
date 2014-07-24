@@ -9,22 +9,22 @@ import tornado
 import tornado.wsgi
 from tornado.websocket import WebSocketHandler
 import json
+import sys
 
 GAME_MODE_TIME = 0
 GAME_MODE_SPEED = 1
 
-N_PLAYER = 2
+N_PLAYER = 3
 WAY_LENGTH = 100
 GAME_MODE = GAME_MODE_TIME
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 GameServer = None
 
 class RaceGame(WebSocketHandler):
   
   def open(self):
-    #I don't care
-    pass
+    logger.info('someone logged in')
 
   def on_close(self):
     GameServer.close(self)
@@ -35,7 +35,7 @@ class RaceGame(WebSocketHandler):
     except:
       logger.info("wrong cmd: %s" % msg)
       self.close()
-    GameServer.msg(self, msg)
+    GameServer.msg(self, cmd)
     pass
 
 
@@ -66,6 +66,7 @@ class GameServer(object):
       self.reset()
 
   def msg(self, client, msg):
+    logger.info("msg: %s", json.dumps(msg))
     if msg['act'] == 'login':
       client.name = msg['name']
       client.car = msg['car']
@@ -133,11 +134,11 @@ class GameServer(object):
 
 if __name__ == '__main__':
   root_logger = logging.getLogger()
-  logging.basicConfig(format='%(asctime)s: %(levelname)s: %(module)s: %(message)s', level=logging.DEBUG)
+  logging.basicConfig(format='%(asctime)s: %(levelname)s: %(module)s: %(message)s', level=logging.INFO)
 
   GameServer = GameServer()
   urlpattern = [(r'^/', RaceGame)]
-  logger.debug(urlpattern)
+  logger.info(urlpattern)
   application = tornado.web.Application(urlpattern, debug=True)
   application.listen(20666, xheaders=True)
   instance = tornado.ioloop.IOLoop.instance()
