@@ -96,7 +96,7 @@ var cmdHandlers = {
 function serverMsg(e){
   cmd = JSON.parse(e.data);
   if(cmdHandlers.hasOwnProperty(cmd['act'])){
-    cmdHandlers[cmd['act']]();
+    cmdHandlers[cmd['act']](cmd);
   }else{
     console.err('unkown cmd: %s', e.data);
   }
