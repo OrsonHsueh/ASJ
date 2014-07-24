@@ -44,6 +44,7 @@ var soundDie = new buzz.sound("assets/sounds/sfx_die.ogg");
 var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.ogg");
 var hungry = new buzz.sound("assets/sounds/_3_m4a.mp3");
 var bgm = new buzz.sound("assets/sounds/ringtone (1).mp3");
+var soundGo = new buzz.sound("assets/sounds/go.wav");
 buzz.all().setVolume(volume);
 
 //loops1
@@ -120,7 +121,7 @@ function showSplash()
    $(".animated").css('-webkit-animation-play-state', 'running');
 
    //fade in the splash
-   //$("#splash").transition({ opacity: 1 }, 2000, 'ease');
+   $("#splash").transition({ opacity: 1 }, 2000, 'ease');
 }
 
 function startGame()
@@ -128,8 +129,8 @@ function startGame()
    currentstate = states.GameScreen;
 
    //fade out the splash
-   //$("#splash").stop();
-   //$("#splash").transition({ opacity: 0 }, 500, 'ease');
+   $("#splash").stop();
+   $("#splash").transition({ opacity: 0 }, 500, 'ease');
 
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
@@ -295,13 +296,54 @@ else
 
 function screenClick()
 {
+   var count = 0;
    if(currentstate == states.GameScreen)
    {
       playerJump();
    }
    else if(currentstate == states.SplashScreen)
    {
-      startGame();
+      $("#splash").stop();
+      $("#splash").transition({ opacity: 0 }, 500, 'ease');
+
+
+      var stop=window.setInterval(function(){
+         count++;
+         console.log(count);
+         soundHit.play();
+
+         if(count==2){
+            console.log('stop');
+            window.clearInterval(stop);
+            count=0;
+          }
+
+      }, 1000);
+
+      $("#countdown").countdown360({
+         radius      : 60,
+         seconds     : 3,
+         fontColor   : '#FFFFFF',
+         autostart   : false,
+      onComplete  : function () { 
+         $("#countdown").hide();
+         $("#goicon").show();
+         soundGo.play();
+      
+
+            setTimeout(function() {
+               // Do something after 5 seconds
+                  $("#goicon").hide();
+            }, 1000);
+
+         }
+      }).start();
+
+
+      setTimeout(function() {
+         // Do something after 5 seconds
+            startGame();
+      }, 5000);
    }
 }
 
