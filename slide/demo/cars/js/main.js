@@ -32,6 +32,12 @@ var loopGameloop;
 var loopPipeloop;
 
 $(document).ready(function() {
+   //get userName
+   var arrParameter = [];
+   arrParameter = parseParameter(document.URL);
+   var userName = getParaValue(arrParameter,"userName");
+   comLogin(userName, 0, null);
+
    //start with the splash screen
    showSplash();
 });
@@ -78,33 +84,28 @@ function updatePlayer(player)
 
    //console.dir(player);
    //console.log("position="+player.selector);
+   var box;
   
    if(player.selector === "#player1") 
    {
    	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	box = document.getElementById('player1').getBoundingClientRect();
+	checkEnd(box);
    }
    else if(player.selector === "#player2") 
    {
    	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	box = document.getElementById('player2').getBoundingClientRect();
+	checkEnd(box);
    }
    else {
    	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	box = document.getElementById('player').getBoundingClientRect();
+	checkEnd(box);
    }
 }
 
-function gameloop() {
-   var player = $("#player");
-   updatePlayer(player);
-
-   var player = $("#player1");
-   updatePlayer(player);
-
-   var player = $("#player2");
-   updatePlayer(player);
-
-   //create the bounding box
-   var box = document.getElementById('player').getBoundingClientRect();
-
+function checkEnd(box) {
    var boxwidth = origwidth;
    var boxheight = (origheight + box.height) / 2;
    var boxleft = ((box.width - boxwidth) / 2) + box.left;
@@ -140,7 +141,18 @@ function gameloop() {
          return;
       }
    }
+}
 
+
+function gameloop() {
+   var player = $("#player");
+   updatePlayer(player);
+
+   var player = $("#player1");
+   updatePlayer(player);
+
+   var player = $("#player2");
+   updatePlayer(player);
 }
 
 /*
