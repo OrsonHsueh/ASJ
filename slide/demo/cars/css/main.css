@@ -1,37 +1,3 @@
-/*
-   Copyright 2014 Nebez Briefkani
-   floppybird - main.css
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
-
-@-webkit-keyframes animLand {
-   0% { background-position: 0px 0px; }
-   100% { background-position: -335px 0px; }
-}
-@-moz-keyframes animLand {
-   0% { background-position: 0px 0px; }
-   100% { background-position: -335px 0px; }
-}
-@-o-keyframes animLand {
-   0% { background-position: 0px 0px; }
-   100% { background-position: -335px 0px; }
-}
-@keyframes animLand {
-   0% { background-position: 0px 0px; }
-   100% { background-position: -335px 0px; }
-}
-
 @-webkit-keyframes animSky {
    0% { background-position: 0px 100%; }
    100% { background-position: -275px 100%; }
@@ -47,86 +13,6 @@
 @keyframes animSky {
    0% { background-position: 0px 100%; }
    100% { background-position: -275px 100%; }
-}
-@-webkit-keyframes animBird9 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -495px; }
-}
-@keyframes animBird9 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -495px; }
-}
-@-webkit-keyframes animBird8 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -412px; }
-}
-@keyframes animBird8 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -412px; }
-}
-@-webkit-keyframes animBird7 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -344px; }
-}
-@keyframes animBird7 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -344px; }
-}
-@-webkit-keyframes animBird6 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -288px; }
-}
-@keyframes animBird6 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -288px; }
-}
-@-webkit-keyframes animBird5 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -240px; }
-}
-@keyframes animBird5 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -240px; }
-}
-@-webkit-keyframes animBird4 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -198px; }
-}
-@keyframes animBird4 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -198px; }
-}
-@-webkit-keyframes animBird3 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -167px; }
-}
-@keyframes animBird3 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -167px; }
-}
-@-webkit-keyframes animBird2 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -140px; }
-}
-@keyframes animBird2 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -140px; }
-}
-@-webkit-keyframes animBird1 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -116px; }
-}
-@keyframes animBird1 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -116px; }
-}
-@-webkit-keyframes animBird {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -96px; }
-}
-@keyframes animBird {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -96px; }
 }
 
 @-webkit-keyframes animPipe {
@@ -146,22 +32,31 @@
    100% { left: -100px; }
 }
 
-@-webkit-keyframes animCeiling {
-   0% { background-position: 0px 0px; }
-   100% { background-position: -63px 0px; }
+@-webkit-keyframes animCar {
+   from { background-position: 0px 0px; }
+   to { background-position: 0px -568px; }
 }
-@-moz-keyframes animCeiling {
-   0% { background-position: 0px 0px; }
-   100% { background-position: -63px 0px; }
+@keyframes animCar {
+   from { background-position: 0px 0px; }
+   to { background-position: 0px -568px; }
 }
-@-o-keyframes animCeiling {
-   0% { background-position: 0px 0px; }
-   100% { background-position: -63px 0px; }
+@-webkit-keyframes animCar1 {
+   from { background-position: 0px 0px; }
+   to { background-position: 0px -568px; }
 }
-@keyframes animCeiling {
-   0% { background-position: 0px 0px; }
-   100% { background-position: -63px 0px; }
+@keyframes animCar1 {
+   from { background-position: 0px 0px; }
+   to { background-position: 0px -568px; }
 }
+@-webkit-keyframes animCar2 {
+   from { background-position: 0px 0px; }
+   to { background-position: 0px -568px; }
+}
+@keyframes animCar2 {
+   from { background-position: 0px 0px; }
+   to { background-position: 0px -568px; }
+}
+
 
 
 *,
@@ -282,16 +177,6 @@ Screen - Game
    z-index: 1000;
 }
 
-#medal
-{
-   position: absolute;
-   opacity: 0;
-   top: 114px;
-   left: 32px;
-   width: 44px;
-   height: 44px;
-}
-
 #currentscore
 {
    position: absolute;
@@ -322,28 +207,6 @@ Screen - Game
    padding-left: 2px;
 }
 
-#replay
-{
-   position: absolute;
-   opacity: 0;
-   top: 205px;
-   left: 61px;
-   height: 115px;
-   width: 70px;
-   cursor: pointer;
-}
-
-.boundingbox
-{
-   position: absolute;
-   display: none;
-   top: 0;
-   left: 0;
-   width: 0;
-   height: 0;
-   border: 1px solid red;
-}
-
 #player
 {
    left: 60px;
@@ -359,20 +222,43 @@ Screen - Game
 #player2
 {
    left: 60px;
-   top: 250px;
+   top: 300px;
 }
 
-
-.bird
+.car
 {
    position: absolute;
    width: 34px;
    height: 24px;
-   background-image: url('../assets/bird.png');
+   background-image: url('../assets/car.png');
    background-repeat: no-repeat;
-   -webkit-animation: animBird 300ms steps(4) infinite;
-   animation: animBird 300ms steps(4) infinite;
+   -webkit-animation: animCar 300ms steps(4) infinite;
+   animation: animCar 300ms steps(4) infinite;
 }
+
+.car1
+{
+   position: absolute;
+   width: 34px;
+   height: 24px;
+   background-image: url('../assets/car.png');
+   background-repeat: no-repeat;
+   -webkit-animation: animCar1 300ms steps(4) infinite;
+   animation: animCar1 300ms steps(4) infinite;
+}
+
+.car2
+{
+   position: absolute;
+   width: 34px;
+   height: 24px;
+   background-image: url('../assets/car.png');
+   background-repeat: no-repeat;
+   -webkit-animation: animCar2 300ms steps(4) infinite;
+   animation: animCar2 300ms steps(4) infinite;
+}
+
+
 
 .pipe
 {
