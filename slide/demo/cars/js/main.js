@@ -81,7 +81,7 @@ function startGame()
    loopPipeloop = setInterval(updatePipes, 5000);
 }
 
-function updatePlayer(player)
+function updatePlayer(player,position)
 {
 
    //console.dir(player);
@@ -172,6 +172,13 @@ $(document).keydown(function(e){
    else if( e.keyCode == 81)
    {
    	//play jump sound
+      comMove(function(num,postition){
+         console.log(num);
+         console.log(position);
+         //update player position
+         updatePlayer(num,position);
+
+      });
    	soundJump.stop();
    	soundJump.play();
 
@@ -189,6 +196,13 @@ $(document).keydown(function(e){
    else if( e.keyCode == 87)
    {
         //play jump sound
+        comMove(function(num,position){
+         console.log(num);
+         console.log(position);
+         //update player position
+         updatePlayer(num,position);
+
+        });
         soundJump.stop();
         soundJump.play();
 
@@ -206,6 +220,13 @@ $(document).keydown(function(e){
    else if( e.keyCode == 69)
    {
         //play jump sound
+        comMove(function(num,position){
+            console.log(num);
+            console.log(position);
+            //update player position
+            updatePlayer(num,position);
+
+        };);
         soundJump.stop();
         soundJump.play();
 
