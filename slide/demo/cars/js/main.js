@@ -23,7 +23,7 @@ var soundHit = new buzz.sound("assets/sounds/sfx_hit.ogg");
 var soundDie = new buzz.sound("assets/sounds/sfx_die.ogg");
 var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.ogg");
 var hungry = new buzz.sound("assets/sounds/_3_m4a.mp3");
-var bgm = new buzz.sound("assets/sounds/ringtone (1).mp3");
+// var bgm = new buzz.sound("assets/sounds/ringtone (1).mp3");
 var soundGo = new buzz.sound("assets/sounds/go.wav");
 buzz.all().setVolume(volume);
 
@@ -77,14 +77,15 @@ function startGame()
 
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
-   loopGameloop = setInterval(gameloop, updaterate);
+   // loopGameloop = setInterval(gameloop, updaterate);
    loopPipeloop = setInterval(updatePipes, 5000);
    comSetMoveCallback(updatePlayer);
 }
 
 function updatePlayer(player,position)
 {
-
+   console.log(player);
+   console.log(position);
    //console.dir(player);
    //console.log("position="+player.selector);
    var box;
@@ -147,16 +148,16 @@ function checkEnd(box) {
 }
 
 
-function gameloop() {
-   var player = $("#player");
-   updatePlayer(player);
+// function gameloop() {
+//    var player = $("#player");
+//    updatePlayer(player);
 
-   var player = $("#player1");
-   updatePlayer(player);
+//    var player = $("#player1");
+//    updatePlayer(player);
 
-   var player = $("#player2");
-   updatePlayer(player);
-}
+//    var player = $("#player2");
+//    updatePlayer(player);
+// }
 
 
 //Handle space bar
