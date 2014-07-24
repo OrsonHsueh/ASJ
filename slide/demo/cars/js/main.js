@@ -94,8 +94,12 @@ function updatePlayer(player)
 
 function gameloop() {
    var player = $("#player");
+   updatePlayer(player);
 
-   //update the player
+   var player = $("#player1");
+   updatePlayer(player);
+
+   var player = $("#player2");
    updatePlayer(player);
 
    //create the bounding box
