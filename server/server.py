@@ -3,6 +3,7 @@ import os
 import sys
 import logging
 import types
+import time
 from errno import *
 
 import tornado
@@ -14,7 +15,7 @@ import sys
 GAME_MODE_TIME = 0
 GAME_MODE_SPEED = 1
 
-N_PLAYER = 3
+N_PLAYER = 1
 WAY_LENGTH = 100
 GAME_MODE = GAME_MODE_TIME
 logger = logging.getLogger()
@@ -72,9 +73,9 @@ class GameServer(object):
       client.car = msg['car']
       client.pos = 0
       if len(self.clients) >= N_PLAYER:
-        client.others.append(client)
+        self.others.append(client)
         client.write_message(json.dumps({'act': 'lane', 'lane':-1}))
-        openInfo = [{'name': c.name, 'car': c.car} for c in self.clietns]
+        openInfo = [{'name': c.name, 'car': c.car} for c in self.clients]
         client.write_message(json.dumps({'act':'open', 'info': openInfo}))
         return
       if client not in self.clients:
@@ -82,7 +83,7 @@ class GameServer(object):
       client.write_message(json.dumps({'act': 'lane', 'lane': self.clients.index(client)}))
       if len(self.clients) == N_PLAYER:
         logger.info('open the game')
-        openInfo = [{'name': c.name, 'car': c.car} for c in self.clietns]
+        openInfo = [{'name': c.name, 'car': c.car} for c in self.clients]
         for c in self.clients:
           c.write_message(json.dumps({'act':'open', 'info': openInfo}))
         for c in self.others:
