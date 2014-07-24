@@ -57,11 +57,11 @@ class GameServer(object):
     self.startTime = 0
 
   def close(self, client):
-    if c in self.clients:
-      self.clients.remove(c)
+    if client in self.clients:
+      self.clients.remove(client)
     if c in self.others:
-      self.others.remove(c)
-    if c in self.ready: # The game have started....
+      self.others.remove(client)
+    if client in self.ready: # The game have started....
       logger.info('someone closed connection during the game')
       self.reset()
 
