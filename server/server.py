@@ -7,13 +7,18 @@ from errno import *
 
 import tornado
 import tornado.wsgi
+from tornado.websocket import WebSocketHandler
 import json
+
+GAME_MODE_TIME = 0
+GAME_MODE_SPEED = 1
 
 N_PLAYER = 2
 WAY_LENGTH = 100
+GAME_MODE = GAME_MODE_TIME
 logger = logging.getLogger(__name__)
 
-GameServer = GameServer()
+GameServer = None
 
 class RaceGame(WebSocketHandler):
   
@@ -38,6 +43,7 @@ class RaceGame(WebSocketHandler):
 class GameServer(object):
 
   def __init__(self):
+    self.clients = []
     self.reset()
 
   def reset(self):
@@ -101,25 +107,37 @@ class GameServer(object):
         c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': msg['pos']}))
       for c in self.others:
         c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': msg['pos']}))
-      if msg['pos'] >= WAY_LENGTH:
-        if client not in self.over:
-          client.time = time.time() - self.startTime
-          self.over.append(client)
-      if len(self.over) == N_PLAYER:
-        logger.info('the game is over')
-        rank = [{'name':c.name, 'car':c.car, 'sec':int(c.time)} for c in self.over]
-        for c in self.clients:
-          c.write_message(json.dumps({'act':'over', 'rank': rank}))
-        for c in self.others:
-          c.write_message(json.dumps({'act':'over', 'rank': rank}))
-        self.reset()
+      client.pos = msg['pos']
+      if GAME_MODE == GAME_MODE_SPEED:
+        if msg['pos'] >= WAY_LENGTH:
+          if client not in self.over:
+            client.time = time.time() - self.startTime
+            self.over.append(client)
+        if len(self.over) == N_PLAYER:
+          logger.info('the game is over')
+          rank = [{'name':c.name, 'car':c.car, 'sec':int(c.time)} for c in self.over]
+          for c in self.clients:
+            c.write_message(json.dumps({'act':'over', 'rank': rank}))
+          for c in self.others:
+            c.write_message(json.dumps({'act':'over', 'rank': rank}))
+          self.reset()
+    elif GAME_MODE == GAME_MODE_TIME and msg['act'] == 'over':
+      order = sorted(self.clients, key=lambda a: a['pos'], reverse = True)
+      rank = [{'name': c.name, 'car': c.car, 'pos': c.pos} for c in order ]
+      for c in self.clients:
+        c.write_message(json.dumps({'act': 'over', 'rank': rank}))
+      for c in self.others:
+        c.write_message(json.dumps({'act':'over', 'rank': rank}))
+      self.reset()
+
 
 if __name__ == '__main__':
   root_logger = logging.getLogger()
   logging.basicConfig(format='%(asctime)s: %(levelname)s: %(module)s: %(message)s', level=logging.DEBUG)
 
-  raceGame = RaceGame()
-  urlpattern = [r'^/', raceGame]
+  GameServer = GameServer()
+  urlpattern = [(r'^/', RaceGame)]
+  logger.debug(urlpattern)
   application = tornado.web.Application(urlpattern, debug=True)
   application.listen(20666, xheaders=True)
   instance = tornado.ioloop.IOLoop.instance()
