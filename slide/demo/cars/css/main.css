@@ -234,20 +234,6 @@ Screen - Game
    width: 100%;
 }
 
-#bigscore
-{
-   position: absolute;
-   top: 20px;
-   left: 150px;
-   z-index: 100;
-}
-
-#bigscore img
-{
-   display: inline-block;
-   padding: 1px;
-}
-
 #splash
 {
    position: absolute;

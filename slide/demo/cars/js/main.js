@@ -36,7 +36,7 @@ var origwidth = 175.0;
 var origheight = 123.0;
 
 //sounds
-var volume = 30;
+var volume = 100;
 var soundJump = new buzz.sound("assets/sounds/sfx_wing.ogg");
 var soundScore = new buzz.sound("assets/sounds/sfx_point.ogg");
 var soundHit = new buzz.sound("assets/sounds/sfx_hit.ogg");
@@ -131,9 +131,6 @@ function startGame()
    //$("#splash").stop();
    //$("#splash").transition({ opacity: 0 }, 500, 'ease');
 
-   //update the big score
-   setBigScore();
-
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
@@ -190,13 +187,6 @@ function gameloop() {
       playerDead();
       return;
    }*/
-
-   //have they tried to escape through the ceiling? :o
-   /*
-   var ceiling = $("#ceiling");
-   if(boxtop <= (ceiling.offset().top + ceiling.height()))
-      position = 0;
-   */
 
    //we can't go any further without a pipe
    if(pipes[0] == null)
@@ -323,19 +313,6 @@ function playerJump()
    soundJump.play();
 }
 
-function setBigScore(erase)
-{
-   var elemscore = $("#bigscore");
-   elemscore.empty();
-
-   if(erase)
-      return;
-
-   var digits = score.toString().split('');
-   for(var i = 0; i < digits.length; i++)
-      elemscore.append("<img src='assets/font_big_" + digits[i] + ".png' alt='" + digits[i] + "'>");
-}
-
 function setSmallScore()
 {
    var elemscore = $("#currentscore");
@@ -425,9 +402,6 @@ function showScore()
    //unhide us
    $("#scoreboard").css("display", "block");
 
-   //remove the big score
-   setBigScore(true);
-
    //have they beaten their high score?
    if(score > highscore)
    {
@@ -496,32 +470,21 @@ function playerScore()
    //play score sound
    soundScore.stop();
    soundScore.play();
-   setBigScore();
 }
 
 function updatePipes()
 {
-   //Do any pipes need removal?
-   $(".pipe").filter(function() { return $(this).position().left <= -100; }).remove()
+   clearInterval(loopPipeloop);
 
-   var level = Math.floor(time/450) -1;
-   if(level < 0) level = 0;
-   var pipeheight = 350 - (level * 50);
-   if(pipeheight < 100) pipeheight = 100;
-
-   //add a new pipe (top height + bottom height  + pipeheight == 420) and put it in our tracker
-   var padding = 60;
-   var constraint = 420 - pipeheight - (padding * 2); //double padding (for top and bottom)
-   var topheight = Math.floor((Math.random()*constraint) + padding); //add lower padding
-   var bottomheight = (420 - pipeheight) - topheight;
-   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: ' + topheight + 'px;"></div><div class="pipe_lower" style="height: ' + bottomheight + 'px;"></div></div>');
+   var topheight = 380;
+   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: ' + topheight + 'px;"></div></div>');
    $("#flyarea").append(newpipe);
    pipes.push(newpipe);
 }
 
 function updateFruits()
 {
-	clearInterval(loopFruitloop);
+   clearInterval(loopFruitloop);
    //Do any pipes need removal?
    $(".fruit").filter(function() { return $(this).position().left <= -100; }).remove()
 
@@ -543,6 +506,7 @@ function updateFruits()
    var newfruit = $('<div class="fruit animated" style="top: ' + top + 'px;"></div>');
    $("#flyarea").append(newfruit);
    fruits.push(newfruit);
+
    var level = Math.floor(time/300) -1;
    if(level < 0) level = 0;
    var ran = 3000-(level * 500);
