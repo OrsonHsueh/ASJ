@@ -16,6 +16,7 @@
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
 
 		<script>
 			var Nite = {};
@@ -123,7 +124,7 @@
 
 				<section data-background="#000">
 					<script>
-						Nite.slide_iframe('cars', 'demo/cars/index.html', {
+						Nite.slide_iframe('cars', 'demo/cars/start.html', {
 							width:1920,
 							height:720,
 							scrolling:"no"
@@ -131,12 +132,52 @@
 					</script>
 				</section>
 
-				<section data-background="demo/end/end.jpg">
+				<section style="font-family: 'Gloria Hallelujah', cursive; " data-background="demo/end/jobs.jpg">
+
+						<p class="finalAnimation">
+					“Almost everything just fall away in the face of death,<br/> leaving only what is truly important. <br/> Remembering that<br/> you are going to die is the best way I know <br/>to avoid the trap of thinking you have something to lose.”<br/><br/><br/><br/>
+						-- Pay tribute to Steve Jobs --
+						</p>
 				</section>
 
 			</div>
 		</div>
+		<style type="text/css">
+			.finalAnimation{
+				position: absolute;
+				bottom: -1000px;
+				-webkit-animation: toEnd 15s; /* Chrome, Safari, Opera */
+    			animation: toEnd 15s;
+    			-webkit-animation-fill-mode: forwards; /* Safari and Chrome */
+    			animation-fill-mode: forwards;
+			}
+			@-webkit-keyframes toEnd {
+			    from {bottom: -800px;}
+			    to {bottom: -200px;}
+			}
+			@keyframes toEnd {
+			    from {bottom: -800px;}
+			    to {bottom: -200px;}
+			}
+			//.finalAnimation2{
+				//position: absolute;
+				//left: -800px;
+				//-webkit-animation: toEndT 20s; /* Chrome, Safari, Opera */
+    			//animation: toEndT 20s;
+    			//-webkit-animation-fill-mode: forwards;  Safari and Chrome 
+    			//animation-fill-mode: forwards;
+			//}
+			//@-webkit-keyframes toEndT {
+			    //from {left: -800px;}
+			    //to {right: 0px;}
+			//}
+			//@keyframes toEndT {
+			    //from {left: -800px;}
+			    //to {right: 0px;}
+			//}
 
+
+		</style>
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
 

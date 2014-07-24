@@ -2,38 +2,18 @@
 var states = Object.freeze({
    SplashScreen: 0,
    GameScreen: 1,
-   ScoreScreen: 2
+   ScoreScreen: 2,
+   CountScreen: 3
 });
 
 var currentstate;
 
-var player1_toppos = 150;
-var player2_toppos = 300;
-
-
-var gravity = 0.25;
-var velocity = 0;
-var position = 0;
-var jump = -4.6;
-
-var fruitscore = 0;
-var score = 0;
-var highscore = 0;
-var time = 0;
+var origwidth = 358.0;
+var origheight = 142.0;
 
 var pipeheight = 350;
 var pipewidth = 52;
-var fruitheight = 44;
-var fruitwidth = 44;
 var pipes = new Array();
-var fruits = new Array();
-
-var replayclickable = false;
-
-   //origwidth = 41.0;
-   //origheight = 29.0;
-var origwidth = 175.0;
-var origheight = 123.0;
 
 //sounds
 var volume = 100;
@@ -44,55 +24,21 @@ var soundDie = new buzz.sound("assets/sounds/sfx_die.ogg");
 var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.ogg");
 var hungry = new buzz.sound("assets/sounds/_3_m4a.mp3");
 var bgm = new buzz.sound("assets/sounds/ringtone (1).mp3");
+var soundGo = new buzz.sound("assets/sounds/go.wav");
 buzz.all().setVolume(volume);
 
 //loops1
 var loopGameloop;
 var loopPipeloop;
-var loopFruitloop;
 
 $(document).ready(function() {
-   if(window.location.search == "?easy")
-      pipeheight = 200;
-
-   //get the highscore
-   var savedscore = getCookie("highscore");
-   if(savedscore != "")
-      highscore = parseInt(savedscore);
-
    //start with the splash screen
    showSplash();
 });
 
-function getCookie(cname)
-{
-   var name = cname + "=";
-   var ca = document.cookie.split(';');
-   for(var i=0; i<ca.length; i++)
-   {
-      var c = ca[i].trim();
-      if (c.indexOf(name)==0) return c.substring(name.length,c.length);
-   }
-   return "";
-}
-
-function setCookie(cname,cvalue,exdays)
-{
-   var d = new Date();
-   d.setTime(d.getTime()+(exdays*24*60*60*1000));
-   var expires = "expires="+d.toGMTString();
-   document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
 function showSplash()
 {
    currentstate = states.SplashScreen;
-
-   //set the defaults (again)
-   velocity = 0;
-   position = 0;
-   score = 0;
-   fruitscore = 0;
 
    //update the player in preparation for the next game
    $("#player").css({ y: 0, x: 0});
@@ -102,72 +48,58 @@ function showSplash()
    $("#player2").css({ y: 0, x: 0});
    updatePlayer($("#player2"));
 	 
-   $('.bird').css("background-image", "url('./assets/bird9.png')");
-   $('.bird').css("-webkit-animation", "animBird9 300ms steps(4) infinite");
-   $('.bird').css("animation", "animBird9 300ms steps(4) infinite");
-
    soundSwoosh.stop();
    soundSwoosh.play();
 
    //clear out all the pipes if there are any
    $(".pipe").remove();
    pipes = new Array();
-   $(".fruit").remove();
-   f = new Array();
 
    //make everything animated again
    $(".animated").css('animation-play-state', 'running');
    $(".animated").css('-webkit-animation-play-state', 'running');
 
    //fade in the splash
-   //$("#splash").transition({ opacity: 1 }, 2000, 'ease');
+   $("#splash").transition({ opacity: 1 }, 2000, 'ease');
 }
 
 function startGame()
 {
    currentstate = states.GameScreen;
 
-   //fade out the splash
-   //$("#splash").stop();
-   //$("#splash").transition({ opacity: 0 }, 500, 'ease');
-
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
-   loopPipeloop = setInterval(updatePipes, 1400);
-   loopFruitloop = setInterval(updateFruits, 5000);
-   //jump from the start!
-   playerJump();
+   loopPipeloop = setInterval(updatePipes, 5000);
 }
 
 function updatePlayer(player)
 {
 
-   console.dir(player);
-   console.log("position="+player.selector);
+   //console.dir(player);
+   //console.log("position="+player.selector);
   
    if(player.selector === "#player1") 
    {
-   	$(player).css({ top: player1_toppos, width: origwidth, height: origheight});
+   	$(player).css({ left: 60, width: origwidth, height: origheight});
    }
    else if(player.selector === "#player2") 
    {
-   	$(player).css({ top: player2_toppos, width: origwidth, height: origheight});
+   	$(player).css({ left: 60, width: origwidth, height: origheight});
    }
    else {
-   	$(player).css({ top: position, width: origwidth, height: origheight});
+   	$(player).css({ left: 60, width: origwidth, height: origheight});
    }
 }
 
 function gameloop() {
-	time += 1;
    var player = $("#player");
+   updatePlayer(player);
 
-   //update the player speed/position
-   velocity += gravity;
-   position += velocity;
+   var player = $("#player1");
+   updatePlayer(player);
 
-   //update the player
+   var player = $("#player2");
    updatePlayer(player);
 
    //create the bounding box
@@ -179,14 +111,6 @@ function gameloop() {
    var boxtop = ((box.height - boxheight) / 2) + box.top;
    var boxright = boxleft + boxwidth;
    var boxbottom = boxtop + boxheight;
-
-   //did we hit the ground?
-   /*
-   if(box.bottom >= $("#land").offset().top)
-   {
-      playerDead();
-      return;
-   }*/
 
    //we can't go any further without a pipe
    if(pipes[0] == null)
@@ -200,44 +124,6 @@ function gameloop() {
    var pipeleft = nextpipeupper.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
    var piperight = pipeleft + pipewidth;
    var pipebottom = pipetop + pipeheight -50;
-
-   var nextfruit = fruits[0];
-
-   var fruittop = nextfruit.offset().top;
-   var fruitleft = nextfruit.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
-   var fruitright = fruitleft + fruitwidth;
-   var fruitbottom = fruittop + fruitheight;
-
-
-   //have we gotten inside the pipe yet?
-   if(boxright > fruitleft)
-   {
-      //we're within the pipe, have we passed between upper and lower pipes?
-      if(boxbottom < fruittop || boxtop > fruitbottom)
-      {
-         //yeah! we're within bounds
-
-      }
-      else
-      {
-         //no! we touched the pipe
-         $(fruits.shift()).remove();
-         fruitscore += 1;
-
-         	if((fruitscore % 3) == 0){
-         		hungry.stop();
-         		hungry.play();
-         	}
-         	if(fruitscore < 10){
-         	$('.bird').css("background-image", "url('./assets/bird" + fruitscore + ".png')");
-         	$('.bird').css("-webkit-animation", "animBird" + fruitscore + " 300ms steps(4) infinite");
-         	$('.bird').css("animation", "animBird" + fruitscore + " 300ms steps(4) infinite");
-   		origwidth= Math.round(origwidth*1.2);
-   		origheight = Math.round(origheight*1.2);
-   		}
-         return;
-      }
-   }
 
    //have we gotten inside the pipe yet?
    if(boxright > pipeleft)
@@ -255,37 +141,46 @@ function gameloop() {
       }
    }
 
-
-   //have we passed the imminent danger?
-   if(boxleft > fruitright)
-   {
-      //yes, remove it
-      fruits.splice(0, 1);
-   }
-
-   //have we passed the imminent danger?
-   if(boxleft > piperight)
-   {
-      //yes, remove it
-      pipes.splice(0, 1);
-
-      //and score a point
-      playerScore();
-   }
 }
 
+/*
 //Handle space bar
 $(document).keydown(function(e){
    //space bar!
    if(e.keyCode == 32)
    {
       //in ScoreScreen, hitting space should click the "replay" button. else it's just a regular spacebar hit
-      if(currentstate == states.ScoreScreen)
-         $("#replay").click();
-      else
+      if(currentstate != states.ScoreScreen)
          screenClick();
    }
-});
+});*/
+
+var OldGX = 0;
+var OldGY = 0;
+var OldGZ = 0;
+window.addEventListener("devicemotion",
+    function handleMotionEvent(event){
+      var x = event.accelerationIncludingGravity.x;
+      var y = event.accelerationIncludingGravity.y;
+      var z = event.accelerationIncludingGravity.z;
+      if(currentstate == states.ScoreScreen)
+        return;
+
+      if( OldGX != 0 || OldGY != 0 || OldGZ != 0){
+        var vDiffX = x - OldGX;
+        var vDiffY = y - OldGY;
+        var vDiffZ = z - OldGZ;
+        var vAbs = Math.sqrt(vDiffX * vDiffX + vDiffY * vDiffY + vDiffZ * vDiffZ);
+        if(vAbs > 3.0){
+          screenClick();
+        }
+      }
+
+      OldGX = x;
+      OldGY = y;
+      OldGZ = z;
+   }, true);
+
 
 //Handle mouse down OR touch start
 if("ontouchstart" in window)
@@ -295,66 +190,61 @@ else
 
 function screenClick()
 {
+   var count = 0;
    if(currentstate == states.GameScreen)
    {
       playerJump();
    }
    else if(currentstate == states.SplashScreen)
    {
-      startGame();
+      currentstate = states.CountScreen;
+      $("#splash").stop();
+      $("#splash").transition({ opacity: 0 }, 500, 'ease');
+
+      var stop=window.setInterval(function(){
+         count++;
+         console.log(count);
+         soundHit.play();
+
+         if(count==2){
+            console.log('stop');
+            window.clearInterval(stop);
+            count=0;
+          }
+      }, 1000);
+
+      $("#countdown").countdown360({
+         radius      : 60,
+         seconds     : 3,
+         fontColor   : '#FFFFFF',
+         autostart   : false,
+      	 onComplete  : function () { 
+           $("#countdown").hide();
+           $("#goicon").show();
+           soundGo.play();
+
+           setTimeout(function() {
+             $("#goicon").hide();
+	     startGame();
+           }, 1000);
+         }
+      }).start();
    }
 }
 
 function playerJump()
 {
-   velocity = jump;
    //play jump sound
    soundJump.stop();
    soundJump.play();
-}
 
-function setSmallScore()
-{
-   var elemscore = $("#currentscore");
-   elemscore.empty();
+   $(".animated").css('animation-play-state', 'running');
+   $(".animated").css('-webkit-animation-play-state', 'running');
+   setTimeout(function() { 
+     $(".animated").css('animation-play-state', 'paused');
+     $(".animated").css('-webkit-animation-play-state', 'paused');
+   }, 2000);
 
-   var digits = score.toString().split('');
-   for(var i = 0; i < digits.length; i++)
-      elemscore.append("<img src='assets/font_small_" + digits[i] + ".png' alt='" + digits[i] + "'>");
-}
-
-function setHighScore()
-{
-   var elemscore = $("#highscore");
-   elemscore.empty();
-
-   var digits = highscore.toString().split('');
-   for(var i = 0; i < digits.length; i++)
-      elemscore.append("<img src='assets/font_small_" + digits[i] + ".png' alt='" + digits[i] + "'>");
-}
-
-function setMedal()
-{
-   var elemmedal = $("#medal");
-   elemmedal.empty();
-
-   if(score < 10)
-      //signal that no medal has been won
-      return false;
-
-   if(score >= 10)
-      medal = "bronze";
-   if(score >= 20)
-      medal = "silver";
-   if(score >= 30)
-      medal = "gold";
-   if(score >= 40)
-      medal = "platinum";
-
-   elemmedal.append('<img src="assets/medal_' + medal +'.png" alt="' + medal +'">');
-
-   //signal that a medal has been won
-   return true;
 }
 
 function playerDead()
@@ -363,22 +253,14 @@ function playerDead()
    $(".animated").css('animation-play-state', 'paused');
    $(".animated").css('-webkit-animation-play-state', 'paused');
 
-   //drop the bird to the floor
-   var playerbottom = $("#player").position().top + $("#player").width(); //we use width because he'll be rotated 90 deg
-   var floor = $("#flyarea").height();
-   var movey = Math.max(0, floor - playerbottom);
-   $("#player").transition({ y: movey + 'px', rotate: 90}, 1000, 'easeInOutCubic');
-
    //it's time to change states. as of now we're considered ScoreScreen to disable left click/flying
    currentstate = states.ScoreScreen;
 
    //destroy our gameloops
    clearInterval(loopGameloop);
    clearInterval(loopPipeloop);
-   clearInterval(loopFruitloop);
    loopGameloop = null;
    loopPipeloop = null;
-   loopFruitloop = null;
 
    //mobile browsers don't support buzz bindOnce event
    if(isIncompatible.any())
@@ -402,74 +284,17 @@ function showScore()
    //unhide us
    $("#scoreboard").css("display", "block");
 
-   //have they beaten their high score?
-   if(score > highscore)
-   {
-      //yeah!
-      highscore = score;
-      //save it!
-      setCookie("highscore", highscore, 999);
-   }
-
-   //update the scoreboard
-   setSmallScore();
-   setHighScore();
-   var wonmedal = setMedal();
-
    //SWOOSH!
    soundSwoosh.stop();
    soundSwoosh.play();
 
    //show the scoreboard
    $("#scoreboard").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up
-   $("#replay").css({ y: '40px', opacity: 0 });
    $("#scoreboard").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
-      //When the animation is done, animate in the replay button and SWOOSH!
       soundSwoosh.stop();
       soundSwoosh.play();
-      $("#replay").transition({ y: '0px', opacity: 1}, 600, 'ease');
-
-      //also animate in the MEDAL! WOO!
-      if(wonmedal)
-      {
-         $("#medal").css({ scale: 2, opacity: 0 });
-         $("#medal").transition({ opacity: 1, scale: 1 }, 1200, 'ease');
-      }
    });
 
-   //make the replay button clickable
-   replayclickable = true;
-}
-
-$("#replay").click(function() {
-   //make sure we can only click once
-   if(!replayclickable)
-      return;
-   else
-      replayclickable = false;
-   //SWOOSH!
-   soundSwoosh.stop();
-   soundSwoosh.play();
-
-   origwidth = 34.0;
-   origheight = 24.0;
-   time = 0;
-   //fade out the scoreboard
-   $("#scoreboard").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
-      //when that's done, display us back to nothing
-      $("#scoreboard").css("display", "none");
-
-      //start the game over!
-      showSplash();
-   });
-});
-
-function playerScore()
-{
-   score += 1;
-   //play score sound
-   soundScore.stop();
-   soundScore.play();
 }
 
 function updatePipes()
@@ -482,39 +307,6 @@ function updatePipes()
    pipes.push(newpipe);
 }
 
-function updateFruits()
-{
-   clearInterval(loopFruitloop);
-   //Do any pipes need removal?
-   $(".fruit").filter(function() { return $(this).position().left <= -100; }).remove()
-
-	//locate the last pipe
-   var lastpipe = pipes[pipes.length -1];
-   var lastpipeupper = lastpipe.children(".pipe_upper");
-   var pipetop = lastpipeupper.offset().top + lastpipeupper.height();
-   var pipeleft = lastpipeupper.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
-   var pipebottom = pipetop + pipeheight;
-   var top;
-   var padding = 20;
-   if(pipeleft + pipewidth < 900 && pipeleft + pipewidth > 810){
-   		var constraint = 420 - fruitheight - (padding * 2);
-   		top = Math.floor((Math.random()*constraint) + padding);
-   }else{
-   		var constraint = pipeheight - fruitheight;
-   		top = Math.floor((Math.random()*constraint) + lastpipeupper.height());
-   }
-   var newfruit = $('<div class="fruit animated" style="top: ' + top + 'px;"></div>');
-   $("#flyarea").append(newfruit);
-   fruits.push(newfruit);
-
-   var level = Math.floor(time/300) -1;
-   if(level < 0) level = 0;
-   var ran = 3000-(level * 500);
-   if(ran < 0) ran = 0;
-   var min = 2000-(level*250);
-   if(min < 500) min = 500;
-   loopFruitloop = setInterval(updateFruits, Math.random()*ran + min);
-}
 
 var isIncompatible = {
    Android: function() {
