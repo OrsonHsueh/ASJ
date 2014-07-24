@@ -1,21 +1,3 @@
-/*
-   Copyright 2014 Nebez Briefkani
-   floppybird - main.js
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
-
-var debugmode = false;
 
 var states = Object.freeze({
    SplashScreen: 0,
@@ -25,10 +7,13 @@ var states = Object.freeze({
 
 var currentstate;
 
+var player1_toppos = 150;
+var player2_toppos = 300;
+
+
 var gravity = 0.25;
 var velocity = 0;
-var position = 180;
-var rotation = 0;
+var position = 0;
 var jump = -4.6;
 
 var fruitscore = 0;
@@ -45,6 +30,8 @@ var fruits = new Array();
 
 var replayclickable = false;
 
+   //origwidth = 41.0;
+   //origheight = 29.0;
 var origwidth = 175.0;
 var origheight = 123.0;
 
@@ -65,8 +52,6 @@ var loopPipeloop;
 var loopFruitloop;
 
 $(document).ready(function() {
-   if(window.location.search == "?debug")
-      debugmode = true;
    if(window.location.search == "?easy")
       pipeheight = 200;
 
@@ -105,20 +90,18 @@ function showSplash()
 
    //set the defaults (again)
    velocity = 0;
-   position = 180;
-   rotation = 0;
+   position = 0;
    score = 0;
    fruitscore = 0;
 
-   //origwidth = 41.0;
-   //origheight = 29.0;
    //update the player in preparation for the next game
    $("#player").css({ y: 0, x: 0});
    updatePlayer($("#player"));
-
-   //$('.bird').css("background-image", "url('./assets/bird.png')");
-   //$('.bird').css("-webkit-animation", "animBird 300ms steps(4) infinite");
-   //$('.bird').css("animation", "animBird 300ms steps(4) infinite");
+   $("#player1").css({ y: 0, x: 0});
+   updatePlayer($("#player1"));
+   $("#player2").css({ y: 0, x: 0});
+   updatePlayer($("#player2"));
+	 
    $('.bird').css("background-image", "url('./assets/bird9.png')");
    $('.bird').css("-webkit-animation", "animBird9 300ms steps(4) infinite");
    $('.bird').css("animation", "animBird9 300ms steps(4) infinite");
@@ -151,13 +134,6 @@ function startGame()
    //update the big score
    setBigScore();
 
-   //debug mode?
-   if(debugmode)
-   {
-      //show the bounding boxes
-      $(".boundingbox").show();
-   }
-
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
@@ -169,11 +145,21 @@ function startGame()
 
 function updatePlayer(player)
 {
-   //rotation
-   rotation = Math.min((velocity / 10) * 90, 90);
 
-   //apply rotation and position
-   $(player).css({ rotate: rotation, top: position, width: origwidth, height: origheight});
+   console.dir(player);
+   console.log("position="+player.selector);
+  
+   if(player.selector === "#player1") 
+   {
+   	$(player).css({ top: player1_toppos, width: origwidth, height: origheight});
+   }
+   else if(player.selector === "#player2") 
+   {
+   	$(player).css({ top: player2_toppos, width: origwidth, height: origheight});
+   }
+   else {
+   	$(player).css({ top: position, width: origwidth, height: origheight});
+   }
 }
 
 function gameloop() {
@@ -190,22 +176,12 @@ function gameloop() {
    //create the bounding box
    var box = document.getElementById('player').getBoundingClientRect();
 
-   var boxwidth = origwidth - (Math.sin(Math.abs(rotation) / 90) * 8);
+   var boxwidth = origwidth;
    var boxheight = (origheight + box.height) / 2;
    var boxleft = ((box.width - boxwidth) / 2) + box.left;
    var boxtop = ((box.height - boxheight) / 2) + box.top;
    var boxright = boxleft + boxwidth;
    var boxbottom = boxtop + boxheight;
-
-   //if we're in debug mode, draw the bounding box
-   if(debugmode)
-   {
-      var boundingbox = $("#playerbox");
-      boundingbox.css('left', boxleft);
-      boundingbox.css('top', boxtop);
-      boundingbox.css('height', boxheight);
-      boundingbox.css('width', boxwidth);
-   }
 
    //did we hit the ground?
    /*
@@ -242,23 +218,6 @@ function gameloop() {
    var fruitright = fruitleft + fruitwidth;
    var fruitbottom = fruittop + fruitheight;
 
-   if(debugmode)
-   {
-      var boundingbox = $("#pipebox");
-      boundingbox.css('left', pipeleft);
-      boundingbox.css('top', pipetop);
-      boundingbox.css('height', pipeheight -50);
-      boundingbox.css('width', pipewidth);
-   }
-
-   if(debugmode)
-   {
-      var boundingbox = $("#fruitbox");
-      boundingbox.css('left', fruitleft);
-      boundingbox.css('top', fruittop);
-      boundingbox.css('height', fruitheight);
-      boundingbox.css('width', fruitwidth);
-   }
 
    //have we gotten inside the pipe yet?
    if(boxright > fruitleft)
