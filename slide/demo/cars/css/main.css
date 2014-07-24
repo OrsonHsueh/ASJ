@@ -134,7 +134,7 @@ Screen - Game
    position: absolute;
    opacity: 0;
    top: 75px;
-   left: 265px;
+   left: 565px;
    width: 188px;
    height: 170px;
    background-image: url('../assets/splash.png');
@@ -146,7 +146,7 @@ Screen - Game
    position: absolute;
    /*opacity: 0;*/
    top: 75px;
-   left: 265px;
+   left: 565px;
    width: 188px;
    height: 170px;
   
@@ -156,7 +156,7 @@ Screen - Game
    position: absolute;
    /*opacity: 0;*/
    top: 75px;
-   left: 265px;
+   left: 565px;
    width: 188px;
    height: 170px;
   

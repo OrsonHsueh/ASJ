@@ -36,7 +36,9 @@ $(document).ready(function() {
    var arrParameter = [];
    arrParameter = parseParameter(document.URL);
    var userName = getParaValue(arrParameter,"userName");
-   comLogin(userName, 0, null);
+   comLogin(userName, 0,function(num){
+      //callback num;
+   });
 
    //start with the splash screen
    showSplash();
@@ -286,15 +288,19 @@ function screenClick()
          seconds     : 3,
          fontColor   : '#FFFFFF',
          autostart   : false,
-      	 onComplete  : function () { 
+      	onComplete  : function () { 
            $("#countdown").hide();
            $("#goicon").show();
            soundGo.play();
 
-           setTimeout(function() {
-             $("#goicon").hide();
-	     startGame();
-           }, 1000);
+            setTimeout(function() {
+              $("#goicon").hide();
+	           startGame();
+            }, 1000);
+
+            comReady();
+            // startGame();
+            comSetGoCallback(startGame);
          }
       }).start();
    }
