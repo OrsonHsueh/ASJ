@@ -9,7 +9,7 @@ import tornado
 import tornado.wsgi
 import json
 
-N_PLAYER = 4
+N_PLAYER = 2
 WAY_LENGTH = 100
 logger = logging.getLogger(__name__)
 
@@ -98,9 +98,9 @@ class GameServer(object):
           c.write_message(json.dumps({'act':'go'}))
     elif msg['act'] == 'pos':
       for c in self.clients:
-        c.write_message(json.dumps({'act':'pos', 'pos': msg['pos']}))
+        c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': msg['pos']}))
       for c in self.others:
-        c.write_message(json.dumps({'act':'pos', 'pos': msg['pos']}))
+        c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': msg['pos']}))
       if msg['pos'] >= WAY_LENGTH:
         if client not in self.over:
           client.time = time.time() - self.startTime
