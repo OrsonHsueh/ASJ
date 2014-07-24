@@ -62,8 +62,8 @@ function showSplash()
    pipes = new Array();
 
    //make everything animated again
-   $(".animated").css('animation-play-state', 'running');
-   $(".animated").css('-webkit-animation-play-state', 'running');
+   $(".animated").css('animation-play-state', 'paused');
+   $(".animated").css('-webkit-animation-play-state', 'paused');
 
    //fade in the splash
    $("#splash").transition({ opacity: 1 }, 2000, 'ease');
@@ -155,9 +155,11 @@ function gameloop() {
    updatePlayer(player);
 }
 
-/*
+
 //Handle space bar
 $(document).keydown(function(e){
+   console.log("e.keyCode=" + e.keyCode);
+
    //space bar!
    if(e.keyCode == 32)
    {
@@ -165,7 +167,61 @@ $(document).keydown(function(e){
       if(currentstate != states.ScoreScreen)
          screenClick();
    }
-});*/
+   else if( e.keyCode == 81)
+   {
+   	//play jump sound
+   	soundJump.stop();
+   	soundJump.play();
+
+   	$(".car").css('animation-play-state', 'running');
+   	$(".car").css('-webkit-animation-play-state', 'running');
+   	//$(".sky").css('animation-play-state', 'running');
+   	//$(".sky").css('-webkit-animation-play-state', 'running');
+   	setTimeout(function() {
+     		$(".car").css('animation-play-state', 'paused');
+     		$(".car").css('-webkit-animation-play-state', 'paused');
+   		//$(".sky").css('animation-play-state', 'paused');
+   		//$(".sky").css('-webkit-animation-play-state', 'paused');
+   	}, 1000);
+   }
+   else if( e.keyCode == 87)
+   {
+        //play jump sound
+        soundJump.stop();
+        soundJump.play();
+
+        $(".car1").css('animation-play-state', 'running');
+        $(".car1").css('-webkit-animation-play-state', 'running');
+   	//$(".sky").css('animation-play-state', 'running');
+   	//$(".sky").css('-webkit-animation-play-state', 'running');
+        setTimeout(function() {
+                $(".car1").css('animation-play-state', 'paused');
+                $(".car1").css('-webkit-animation-play-state', 'paused');
+   	//	$(".sky").css('animation-play-state', 'paused');
+   	//	$(".sky").css('-webkit-animation-play-state', 'paused');
+        }, 1000);
+   }
+   else if( e.keyCode == 69)
+   {
+        //play jump sound
+        soundJump.stop();
+        soundJump.play();
+
+        $(".car2").css('animation-play-state', 'running');
+        $(".car2").css('-webkit-animation-play-state', 'running');
+   	//$(".sky").css('animation-play-state', 'running');
+   	//$(".sky").css('-webkit-animation-play-state', 'running');
+        setTimeout(function() {
+                $(".car2").css('animation-play-state', 'paused');
+                $(".car2").css('-webkit-animation-play-state', 'paused');
+   	//	$(".sky").css('animation-play-state', 'paused');
+   	//	$(".sky").css('-webkit-animation-play-state', 'paused');
+        }, 1000);
+   }
+ 
+
+
+});
 
 var OldGX = 0;
 var OldGY = 0;
