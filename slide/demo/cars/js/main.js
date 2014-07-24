@@ -62,8 +62,8 @@ function showSplash()
    pipes = new Array();
 
    //make everything animated again
-   $(".animated").css('animation-play-state', 'running');
-   $(".animated").css('-webkit-animation-play-state', 'running');
+   $(".animated").css('animation-play-state', 'paused');
+   $(".animated").css('-webkit-animation-play-state', 'paused');
 
    //fade in the splash
    $("#splash").transition({ opacity: 1 }, 2000, 'ease');
