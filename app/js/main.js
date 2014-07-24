@@ -332,6 +332,32 @@ $(document).keydown(function(e){
    }
 });
 
+var OldGX = 0;
+var OldGY = 0;
+var OldGZ = 0;
+window.addEventListener("devicemotion",
+    function handleMotionEvent(event){
+      var x = event.accelerationIncludingGravity.x;
+      var y = event.accelerationIncludingGravity.y;
+      var z = event.accelerationIncludingGravity.z;
+      if(currentstate == states.ScoreScreen)
+        return;
+
+      if( OldGX != 0 || OldGY != 0 || OldGZ != 0){
+        var vDiffX = x - OldGX;
+        var vDiffY = y - OldGY;
+        var vDiffZ = z - OldGZ;
+        var vAbs = Math.sqrt(vDiffX * vDiffX + vDiffY * vDiffY + vDiffZ * vDiffZ);
+        if(vAbs > 3.0){
+          screenClick();
+        }
+      }
+
+      OldGX = x;
+      OldGY = y;
+      OldGZ = z;
+    }, true);
+
 //Handle mouse down OR touch start
 if("ontouchstart" in window)
    $(document).on("touchstart", screenClick);
