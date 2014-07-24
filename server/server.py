@@ -105,11 +105,11 @@ class GameServer(object):
         for c in self.others:
           c.write_message(json.dumps({'act':'go'}))
     elif msg['act'] == 'pos':
+      client.pos += msg['pos']
       for c in self.clients:
-        c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': msg['pos']}))
+        c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': client.pos}))
       for c in self.others:
-        c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': msg['pos']}))
-      client.pos = msg['pos']
+        c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': client.pos}))
       if GAME_MODE == GAME_MODE_SPEED:
         if msg['pos'] >= WAY_LENGTH:
           if client not in self.over:
