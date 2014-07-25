@@ -502,7 +502,8 @@ function showScore(result)
 
    }
    //alert(parmString);
-   window.open("end.html" + "?" + parmString, '_self');
+   //window.open("end.html" + "?" + parmString, '_self');
+   window.location.href="end.html"+"?"+parmString;
 }
 
 function updatePipes()
