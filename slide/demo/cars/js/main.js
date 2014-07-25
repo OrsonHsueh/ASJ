@@ -301,10 +301,11 @@ function screenClick()
 
            setTimeout(function() {
              $("#goicon").hide();
+             comSetGoCallback();
+	     startGame();
            }, 1000);
 
            comReady();
-           comSetGoCallback(startGame);
          }
       }).start();
    }

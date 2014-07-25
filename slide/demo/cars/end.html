@@ -5,7 +5,9 @@
 	<link rel="stylesheet" href="css/end_tables.css">
 	<script type="text/javascript" src = "./js/com.js"></script>
 	<script type="text/javascript" src = "./js/ParmUtil.js"></script>
+	<script type="text/javascript" src="js/buzz.min.js"></script>
 	<script>
+
 		var TAGETURL = "start.html";
 		var DIV_TOP_MULTI = 0.5;
 		var DIV_LEFT_MULTI = 0.3;
@@ -17,6 +19,10 @@
 		var _color = ["green", "orange"];
 
 		function init() {
+			//alert(123);
+			var soundGo = new buzz.sound("assets/sounds/end_win.ogg");
+			soundGo.stop();
+			soundGo.play();
 
 			var div_main = document.getElementById("div_main");
 			div_main.innerHTML = "";

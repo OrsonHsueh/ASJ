@@ -210,19 +210,19 @@ Screen - Game
 #player
 {
    left: 60px;
-   top: 40px;
+   top: 1%;
 }
 
 #player1
 {
    left: 60px;
-   top: 200px;
+   top: 30%;
 }
 
 #player2
 {
    left: 60px;
-   top: 400px;
+   top: 70%;
 }
 
 .car
