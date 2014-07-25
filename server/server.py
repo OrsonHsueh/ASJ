@@ -15,7 +15,7 @@ import sys
 GAME_MODE_TIME = 0
 GAME_MODE_SPEED = 1
 
-N_PLAYER = 3
+N_PLAYER = 2
 WAY_LENGTH = 100
 GAME_MODE = GAME_MODE_TIME
 logger = logging.getLogger()
@@ -150,9 +150,11 @@ if __name__ == '__main__':
   logging.basicConfig(format='%(asctime)s: %(levelname)s: %(module)s: %(message)s', level=logging.INFO)
 
   GameServer = GameServer()
-  urlpattern = [(r'^/', RaceGame)]
+  urlpattern = [(r'^/', RaceGame),
+      (r'^/web/(.*)', tornado.web.StaticFileHandler, {'path':'../slide/demo/cars/'}),
+      ]
   logger.info(urlpattern)
-  application = tornado.web.Application(urlpattern, debug=True)
+  application = tornado.web.Application(urlpattern, debug=False)
   application.listen(20666, xheaders=True)
   instance = tornado.ioloop.IOLoop.instance()
   instance.start()
