@@ -3,7 +3,7 @@ var SOCKET = null;
  * 回傳一個代碼，代表在第幾賽道  **** 更新，用 callback 傳回 ****
  */
 function comLogin(name, car, callback){
-  SOCKET = new WebSocket("ws://127.0.0.1:20666/");
+  SOCKET = new WebSocket("ws://10.62.46.48:20666/");
   SOCKET.onmessage = serverMsg;
   SOCKET.onopen = function(e){
     SOCKET.send(JSON.stringify({'act': 'login', 'name': name, 'car':car}));
