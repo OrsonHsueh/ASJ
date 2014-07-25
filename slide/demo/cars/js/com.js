@@ -4,6 +4,7 @@ var SOCKET = null;
  */
 function comLogin(name, car, callback){
   SOCKET = new WebSocket("ws://10.62.46.48:20666/");
+  //SOCKET = new WebSocket("ws://127.0.0.1:20666/");
   SOCKET.onmessage = serverMsg;
   SOCKET.onopen = function(e){
     SOCKET.send(JSON.stringify({'act': 'login', 'name': name, 'car':car}));
@@ -17,6 +18,7 @@ function comLogin(name, car, callback){
  * 如果 login 時回傳的賽道是 0，則上面資料參賽者陣列的第 0 個就是自己的資料
  * 分別是第一台車、第二台車 */
 function comSetGameOpenCallback(callback){
+  console.log('install callback');
   MSG_CALLBACKS.open = callback;
 }
 
@@ -65,7 +67,9 @@ var MSG_CALLBACKS = {
 
 var cmdHandlers = {
   'open': function(msg){
+    console.log(msg.info);
     if(MSG_CALLBACKS.open != null){
+      console.log(msg.info);
       MSG_CALLBACKS.open(msg.info);
     }
   },
