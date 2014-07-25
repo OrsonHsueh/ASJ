@@ -25,6 +25,9 @@ var soundDie = new buzz.sound("assets/sounds/sfx_die.ogg");
 var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.ogg");
 var hungry = new buzz.sound("assets/sounds/_3_m4a.mp3");
 var soundGo = new buzz.sound("assets/sounds/go.wav");
+var carSound = new buzz.sound("assets/sounds/carSound.mp3");
+var carSound1 = new buzz.sound("assets/sounds/carSound2.mp3");
+var carSound2 = new buzz.sound("assets/sounds/peopleRun.mp3");
 buzz.all().setVolume(volume);
 
 //loops1
@@ -80,7 +83,7 @@ function startGame()
    currentstate = states.GameScreen;
 
    loopGameloop = setInterval(gameloop, 100);
-   // loopPipeloop = setInterval(updatePipes, 5000);
+   loopPipeloop = setInterval(updatePipes, 10000);
    comSetMoveCallback(updatePlayerPosition);
 }
 
@@ -357,8 +360,8 @@ function playerJump(num)
    {
    	//play jump sound
         comMove(1);
-   	soundJump.stop();
-   	soundJump.play();
+   	carSound.stop();
+   	carSound.play();
 
    	$(".car").css('animation-play-state', 'running');
    	$(".car").css('-webkit-animation-play-state', 'running');
@@ -381,8 +384,8 @@ function playerJump(num)
    {
         //play jump sound
         comMove(1);
-        soundJump.stop();
-        soundJump.play();
+   	carSound1.stop();
+   	carSound1.play();
 
         $(".car1").css('animation-play-state', 'running');
         $(".car1").css('-webkit-animation-play-state', 'running');
@@ -405,8 +408,8 @@ function playerJump(num)
    {
         //play jump sound
         comMove(1);
-        soundJump.stop();
-        soundJump.play();
+   	carSound2.stop();
+   	carSound2.play();
 
         $(".car2").css('animation-play-state', 'running');
         $(".car2").css('-webkit-animation-play-state', 'running');
@@ -486,8 +489,7 @@ function updatePipes()
 {
    clearInterval(loopPipeloop);
 
-   var topheight = 380;
-   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: ' + topheight + 'px;"></div></div>');
+   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: 600px;"></div></div>');
    $("#flyarea").append(newpipe);
    pipes.push(newpipe);
 }
