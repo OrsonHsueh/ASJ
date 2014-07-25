@@ -9,12 +9,12 @@
 	<script>
 
 		var TAGETURL = "start.html";
-		var DIV_TOP_MULTI = 0.5;
-		var DIV_LEFT_MULTI = 0.3;
-		var IMG_WIN_TOP_MULTI = 0.5;
-		var IMG_WIN_LEFT_MULTI = 0.3;
+		var DIV_TOP_MULTI = 0.25;
+		var DIV_LEFT_MULTI = 0.1;
+		var IMG_WIN_TOP_MULTI = 0.2;
+		var IMG_WIN_LEFT_MULTI = 0.2;
 		//var _Value = ["TonyChang", "TEST_2", "TEST_3"];
-		//var test_string = "?userName0#123&userName1#456&userName3#456";
+		//var test_string = "?userName0#TonyChang&userName1#123&userName3#456";
 		var _Value = [];
 		var _color = ["green", "orange"];
 
@@ -29,14 +29,15 @@
 
 			//get rank result
 			_Value = parseParameter(document.URL);
+			//console.log(test_string);
 			//_Value = parseParameter(document.URL + test_string);
 
 			var idx_color = 0;
-			var result = "<table class=pricing-table><thead>"
+			var result = "<table class=pricing-table><thead>";
 			var title, content, head;
 			head = "<tr class=plan>";
 			
-			for (var i=0; i<_Value.length;i++) {
+			/*for (var i=0; i<_Value.length;i++) {
 				if (i == 0) {
 					title = "<tr class=plan>"
 					content = "<tr class=price>"
@@ -53,12 +54,27 @@
 				title = title + "</tr>";
 				content = content + "</tr>";
 				head = head + "</tr>";
+			}*/
+
+			for (var i=0; i<_Value.length;i++) {
+				title = "";
+				content = "";
+				if (i ==0) {
+					title = "<tr class=plan><td class=" + _color[1] + " ><H2>" + (i+1)+ "</H2></td></tr>"
+					content = "<tr class=price><td class=" + _color[1] + " ><p>" + _Value[i].Value+ "</p></td></tr>"	
+				}else {
+					title = "<tr class=plan><td class=" + _color[0] + " ><H2>" + (i+1)+ "</H2></td></tr>"
+					content = "<tr class=price><td class=" + _color[0] + " ><p>" + _Value[i].Value+ "</p></td></tr>"	
+				}
+
+				result += title + content;
 			}
-			result += head + title + content;
-			result += "<tr><td colspan="+ _Value.length +"><button id=btn_restart onfocus=this.blur() onclick=btn_restart()>重新開始</button></td></tr>"
+
+			result += "<tr><td><button id=btn_restart onfocus=this.blur() onclick=btn_restart()>重新開始</button></td></tr>";
 			result += "</thead></table>";
+						
         	div_main.innerHTML = result;
-        	console.log(result);
+        	//console.log(result);
 			
 			
 			div_main.style.position = "absolute";
