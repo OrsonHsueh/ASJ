@@ -7,6 +7,7 @@ var states = Object.freeze({
 });
 
 var currentstate;
+var currentNum;
 
 var origwidth = 358.0;
 var origheight = 142.0;
@@ -30,13 +31,16 @@ buzz.all().setVolume(volume);
 var loopGameloop;
 var loopPipeloop;
 
+var temp;
+
 $(document).ready(function() {
    //get userName
    var arrParameter = [];
    arrParameter = parseParameter(document.URL);
    var userName = getParaValue(arrParameter,"userName");
    comLogin(userName, 0,function(num){
-      //callback num;
+      console.log("num = " + num );
+      currentNum = num;
    });
 
    //start with the splash screen
@@ -76,27 +80,59 @@ function startGame()
 
    loopGameloop = setInterval(gameloop, 100);
    loopPipeloop = setInterval(updatePipes, 5000);
-   comSetMoveCallback(updatePlayer);
+   comSetMoveCallback(updatePlayerPosition);
 }
 
-function updatePlayer(player,position)
+function updatePlayer(player)
 {
-   console.log(player);
-   console.log(position);
+   console.log('initial player position');
    //console.dir(player);
    //console.log("position="+player.selector);
   
    if(player.selector === "#player1") 
    {
-   	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	$(player).css({ left: 0, width: origwidth, height: origheight});
    }
    else if(player.selector === "#player2") 
    {
-   	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	$(player).css({ left: 0, width: origwidth, height: origheight});
    }
    else {
-   	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	$(player).css({ left: 0, width: origwidth, height: origheight});
    }
+}
+function updatePlayerPosition(lanenum,position){
+   console.log('update player position');
+   // console.log(lanenum);
+   console.log(position);
+
+   var i = position.indexOf(Math.max.apply(Math, position));
+
+   var maxposition = Math.max.apply(null, position);
+   console.log(i);
+   console.log(maxposition);
+
+   temp = 270/maxposition;
+
+
+
+   if(i==0){
+      $("#player").css({ left: 290, width: origwidth, height: origheight});
+      $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
+      $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+   } else if (i==1){
+      $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
+      $("#player1").css({ left: 290, width: origwidth, height: origheight});
+      $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+   } else {
+      $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
+      $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
+      $("#player2").css({ left: 290, width: origwidth, height: origheight});
+   }
+
+
+   
+
 }
 
 function checkEnd(box) {
@@ -152,81 +188,18 @@ function gameloop() {
 //Handle space bar
 $(document).keydown(function(e){
    console.log("e.keyCode=" + e.keyCode);
-
    if( e.keyCode == 81)
    {
-   	//play jump sound
-        comMove(1);
-   	soundJump.stop();
-   	soundJump.play();
-
-   	$(".car").css('animation-play-state', 'running');
-   	$(".car").css('-webkit-animation-play-state', 'running');
-        if( currentstate == states.GameScreen )
-	{
-   	  $(".sky").css('animation-play-state', 'running');
-   	  $(".sky").css('-webkit-animation-play-state', 'running');
-	}
-   	setTimeout(function() {
-     	  $(".car").css('animation-play-state', 'paused');
-     	  $(".car").css('-webkit-animation-play-state', 'paused');
-	  if( currentstate == states.GameScreen )
-       	  {
-   	    $(".sky").css('animation-play-state', 'paused');
-   	    $(".sky").css('-webkit-animation-play-state', 'paused');
-	  }
-   	}, 1000);
+	playerJump(0);
    }
    else if( e.keyCode == 87)
    {
-        //play jump sound
-        comMove(1);
-        soundJump.stop();
-        soundJump.play();
-
-        $(".car1").css('animation-play-state', 'running');
-        $(".car1").css('-webkit-animation-play-state', 'running');
-        if( currentstate == states.GameScreen )
-        {
-   	  $(".sky").css('animation-play-state', 'running');
-   	  $(".sky").css('-webkit-animation-play-state', 'running');
-	}
-        setTimeout(function() {
-          $(".car1").css('animation-play-state', 'paused');
-          $(".car1").css('-webkit-animation-play-state', 'paused');
-	  if( currentstate == states.GameScreen )
-          {
-   	    $(".sky").css('animation-play-state', 'paused');
-   	    $(".sky").css('-webkit-animation-play-state', 'paused');
-	  }
-        }, 1000);
+	playerJump(1);
    }
    else if( e.keyCode == 69)
    {
-        //play jump sound
-        comMove(1);
-        soundJump.stop();
-        soundJump.play();
-
-        $(".car2").css('animation-play-state', 'running');
-        $(".car2").css('-webkit-animation-play-state', 'running');
-        if( currentstate == states.GameScreen )
-        {
-   	  $(".sky").css('animation-play-state', 'running');
-   	  $(".sky").css('-webkit-animation-play-state', 'running');
-	}
-        setTimeout(function() {
-          $(".car2").css('animation-play-state', 'paused');
-          $(".car2").css('-webkit-animation-play-state', 'paused');
-	  if( currentstate == states.GameScreen )
-          {
-   	    $(".sky").css('animation-play-state', 'paused');
-   	    $(".sky").css('-webkit-animation-play-state', 'paused');
-	  }
-        }, 1000);
+	playerJump(2);
    }
-
-
 });
 
 var OldGX = 0;
@@ -267,7 +240,7 @@ function screenClick()
    var count = 0;
    if(currentstate == states.GameScreen)
    {
-      //playerJump();
+      playerJump(currentNum);
    }
    else if(currentstate == states.SplashScreen)
    {
@@ -308,19 +281,80 @@ function screenClick()
    }
 }
 
-function playerJump()
+function playerJump(num)
 {
-   //play jump sound
-   soundJump.stop();
-   soundJump.play();
+   if( num == 0)
+   {
+   	//play jump sound
+        comMove(1);
+   	soundJump.stop();
+   	soundJump.play();
 
-   $(".animated").css('animation-play-state', 'running');
-   $(".animated").css('-webkit-animation-play-state', 'running');
-   setTimeout(function() { 
-     $(".animated").css('animation-play-state', 'paused');
-     $(".animated").css('-webkit-animation-play-state', 'paused');
-   }, 2000);
+   	$(".car").css('animation-play-state', 'running');
+   	$(".car").css('-webkit-animation-play-state', 'running');
+        if( currentstate == states.GameScreen )
+	{
+   	  $(".sky").css('animation-play-state', 'running');
+   	  $(".sky").css('-webkit-animation-play-state', 'running');
+	}
+   	setTimeout(function() {
+     	  $(".car").css('animation-play-state', 'paused');
+     	  $(".car").css('-webkit-animation-play-state', 'paused');
+	  if( currentstate == states.GameScreen )
+       	  {
+   	    $(".sky").css('animation-play-state', 'paused');
+   	    $(".sky").css('-webkit-animation-play-state', 'paused');
+	  }
+   	}, 1000);
+   }
+   else if( num == 1 )
+   {
+        //play jump sound
+        comMove(1);
+        soundJump.stop();
+        soundJump.play();
 
+        $(".car1").css('animation-play-state', 'running');
+        $(".car1").css('-webkit-animation-play-state', 'running');
+        if( currentstate == states.GameScreen )
+        {
+   	  $(".sky").css('animation-play-state', 'running');
+   	  $(".sky").css('-webkit-animation-play-state', 'running');
+	}
+        setTimeout(function() {
+          $(".car1").css('animation-play-state', 'paused');
+          $(".car1").css('-webkit-animation-play-state', 'paused');
+	  if( currentstate == states.GameScreen )
+          {
+   	    $(".sky").css('animation-play-state', 'paused');
+   	    $(".sky").css('-webkit-animation-play-state', 'paused');
+	  }
+        }, 1000);
+   }
+   else if( num == 2 )
+   {
+        //play jump sound
+        comMove(1);
+        soundJump.stop();
+        soundJump.play();
+
+        $(".car2").css('animation-play-state', 'running');
+        $(".car2").css('-webkit-animation-play-state', 'running');
+        if( currentstate == states.GameScreen )
+        {
+   	  $(".sky").css('animation-play-state', 'running');
+   	  $(".sky").css('-webkit-animation-play-state', 'running');
+	}
+        setTimeout(function() {
+          $(".car2").css('animation-play-state', 'paused');
+          $(".car2").css('-webkit-animation-play-state', 'paused');
+	  if( currentstate == states.GameScreen )
+          {
+   	    $(".sky").css('animation-play-state', 'paused');
+   	    $(".sky").css('-webkit-animation-play-state', 'paused');
+	  }
+        }, 1000);
+   }
 }
 
 function playerDead()
