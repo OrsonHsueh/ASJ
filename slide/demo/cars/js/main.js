@@ -112,23 +112,52 @@ function updatePlayerPosition(lanenum,position){
    console.log(i);
    console.log(maxposition);
 
-   temp = 270/maxposition;
+   temp = 250/maxposition;
 
 
 
    if(i==0){
       $("#player").css({ left: 290, width: origwidth, height: origheight});
-      $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
-      $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+      if((position[0]-position[1])>10){
+         $("#player1").css({ left: -50, width: origwidth, height: origheight});
+      } else {
+         $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
+      }
+      if((position[0]-position[2])>10){
+         $("#player2").css({ left: -50, width: origwidth, height: origheight});
+      } else {
+         $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+      }
+
    } else if (i==1){
-      $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
       $("#player1").css({ left: 290, width: origwidth, height: origheight});
-      $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+
+      if((position[1]-position[0])>10){
+         $("#player").css({ left: -50, width: origwidth, height: origheight});
+      } else {
+         $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
+      }
+       if((position[1]-position[2])>10){
+         $("#player2").css({ left: -50, width: origwidth, height: origheight});
+      } else {
+         $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+      }
    } else {
-      $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
-      $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
       $("#player2").css({ left: 290, width: origwidth, height: origheight});
+
+      if((position[2]-position[0])>10){
+         $("#player").css({ left: -50, width: origwidth, height: origheight});
+      } else {
+         $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
+      }
+       if((position[2]-position[1])>10){
+         $("#player1").css({ left: -50, width: origwidth, height: origheight});
+       } else {
+         $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
+      }
    }
+
+
 
 
    
