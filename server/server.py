@@ -127,8 +127,9 @@ class GameServer(object):
             c.write_message(json.dumps({'act':'over', 'rank': rank}))
           self.reset()
     elif GAME_MODE == GAME_MODE_TIME and msg['act'] == 'over':
-      order = sorted(self.clients, key=lambda a: a['pos'], reverse = True)
+      order = sorted(self.clients, lambda a: a.pos, reverse = True)
       rank = [{'name': c.name, 'car': c.car, 'pos': c.pos} for c in order ]
+      logger.info(rank)
       for c in self.clients:
         c.write_message(json.dumps({'act': 'over', 'rank': rank}))
       for c in self.others:
