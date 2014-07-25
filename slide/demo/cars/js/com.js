@@ -16,7 +16,7 @@ function comLogin(name, car, callback){
 /* callback 會傳入 [{'name': name, 'car': carNo}, {'name': name, 'car': carNo}, ....]
  * 如果 login 時回傳的賽道是 0，則上面資料參賽者陣列的第 0 個就是自己的資料
  * 分別是第一台車、第二台車 */
-function comSetGameOpenCallback(callBack){
+function comSetGameOpenCallback(callback){
   MSG_CALLBACKS.open = callback;
 }
 
@@ -84,17 +84,17 @@ var cmdHandlers = {
       MSG_CALLBACKS.move(msg.lane, msg.pos);
     }
   },
-  'over': function(over){
+  'over': function(msg){
     if(MSG_CALLBACKS.over != null){
+      console.log(msg.rank);
       MSG_CALLBACKS.over(msg.rank);
     }
-    socket.close();
-    socket = null;
   }
 };
 
 function serverMsg(e){
   cmd = JSON.parse(e.data);
+  console.log(e.data);
   if(cmdHandlers.hasOwnProperty(cmd['act'])){
     cmdHandlers[cmd['act']](cmd);
   }else{

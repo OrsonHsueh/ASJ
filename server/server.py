@@ -15,7 +15,7 @@ import sys
 GAME_MODE_TIME = 0
 GAME_MODE_SPEED = 1
 
-N_PLAYER = 1
+N_PLAYER = 2
 WAY_LENGTH = 100
 GAME_MODE = GAME_MODE_TIME
 logger = logging.getLogger()
@@ -110,9 +110,9 @@ class GameServer(object):
     elif msg['act'] == 'pos':
       client.pos += msg['pos']
       for c in self.clients:
-        c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': client.pos}))
+        c.write_message(json.dumps({'act':'pos', 'pos': [c.pos for c in self.clients]}))
       for c in self.others:
-        c.write_message(json.dumps({'act':'pos', 'lane':self.clients.index(client), 'pos': client.pos}))
+        c.write_message(json.dumps({'act':'pos', 'pos': [c.pos for c in self.clients]}))
       if GAME_MODE == GAME_MODE_SPEED:
         if msg['pos'] >= WAY_LENGTH:
           if client not in self.over:
@@ -127,8 +127,9 @@ class GameServer(object):
             c.write_message(json.dumps({'act':'over', 'rank': rank}))
           self.reset()
     elif GAME_MODE == GAME_MODE_TIME and msg['act'] == 'over':
-      order = sorted(self.clients, key=lambda a: a['pos'], reverse = True)
+      order = sorted(self.clients, lambda a: a.pos, reverse = True)
       rank = [{'name': c.name, 'car': c.car, 'pos': c.pos} for c in order ]
+      logger.info(rank)
       for c in self.clients:
         c.write_message(json.dumps({'act': 'over', 'rank': rank}))
       for c in self.others:
