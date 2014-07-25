@@ -25,6 +25,9 @@ var soundDie = new buzz.sound("assets/sounds/sfx_die.ogg");
 var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.ogg");
 var hungry = new buzz.sound("assets/sounds/_3_m4a.mp3");
 var soundGo = new buzz.sound("assets/sounds/go.wav");
+var carSound = new buzz.sound("assets/sounds/carSound.mp3");
+var carSound1 = new buzz.sound("assets/sounds/carSound2.mp3");
+var carSound2 = new buzz.sound("assets/sounds/peopleRun.mp3");
 buzz.all().setVolume(volume);
 
 //loops1
@@ -32,6 +35,7 @@ var loopGameloop;
 var loopPipeloop;
 
 var temp;
+var arrive;
 
 $(document).ready(function() {
    //get userName
@@ -79,7 +83,7 @@ function startGame()
    currentstate = states.GameScreen;
 
    loopGameloop = setInterval(gameloop, 100);
-   loopPipeloop = setInterval(updatePipes, 5000);
+   loopPipeloop = setInterval(updatePipes, 10000);
    comSetMoveCallback(updatePlayerPosition);
 }
 
@@ -112,23 +116,61 @@ function updatePlayerPosition(lanenum,position){
    console.log(i);
    console.log(maxposition);
 
-   temp = 270/maxposition;
+
+   if(maxposition<5){
+      arrive = 100;
+   } else if (maxposition>5 && maxposition < 15){
+      arrive = 200;
+   } else if(maxposition>15 && maxposition < 25) {
+      arrive = 300;
+   }
+
+   temp = arrive/maxposition;
 
 
 
    if(i==0){
-      $("#player").css({ left: 290, width: origwidth, height: origheight});
-      $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
-      $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+      $("#player").css({ left: arrive, width: origwidth, height: origheight});
+      if((position[0]-position[1])>10){
+         $("#player1").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player1").css({ left: temp*position[1]*0.7, width: origwidth, height: origheight});
+      }
+      if((position[0]-position[2])>10){
+         $("#player2").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player2").css({ left: temp*position[2]*0.7, width: origwidth, height: origheight});
+      }
+
    } else if (i==1){
-      $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
-      $("#player1").css({ left: 290, width: origwidth, height: origheight});
-      $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+      $("#player1").css({ left: arrive, width: origwidth, height: origheight});
+
+      if((position[1]-position[0])>10){
+         $("#player").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player").css({ left: temp*position[0]*0.7, width: origwidth, height: origheight});
+      }
+       if((position[1]-position[2])>10){
+         $("#player2").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player2").css({ left: temp*position[2]*0.7, width: origwidth, height: origheight});
+      }
    } else {
-      $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
-      $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
-      $("#player2").css({ left: 290, width: origwidth, height: origheight});
+      $("#player2").css({ left: arrive, width: origwidth, height: origheight});
+
+      if((position[2]-position[0])>10){
+         $("#player").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player").css({ left: temp*position[0]*0.7, width: origwidth, height: origheight});
+      }
+       if((position[2]-position[1])>10){
+         $("#player1").css({ left: -250, width: origwidth, height: origheight});
+       } else {
+         $("#player1").css({ left: temp*position[1]*0.7, width: origwidth, height: origheight});
+      }
    }
+
+
 
 
    
@@ -272,10 +314,11 @@ function screenClick()
 
            setTimeout(function() {
              $("#goicon").hide();
+             comSetGoCallback();
+	     startGame();
            }, 1000);
 
            comReady();
-           comSetGoCallback(startGame);
          }
       }).start();
    }
@@ -287,8 +330,8 @@ function playerJump(num)
    {
    	//play jump sound
         comMove(1);
-   	soundJump.stop();
-   	soundJump.play();
+   	carSound.stop();
+   	carSound.play();
 
    	$(".car").css('animation-play-state', 'running');
    	$(".car").css('-webkit-animation-play-state', 'running');
@@ -311,8 +354,8 @@ function playerJump(num)
    {
         //play jump sound
         comMove(1);
-        soundJump.stop();
-        soundJump.play();
+   	carSound1.stop();
+   	carSound1.play();
 
         $(".car1").css('animation-play-state', 'running');
         $(".car1").css('-webkit-animation-play-state', 'running');
@@ -335,8 +378,8 @@ function playerJump(num)
    {
         //play jump sound
         comMove(1);
-        soundJump.stop();
-        soundJump.play();
+   	carSound2.stop();
+   	carSound2.play();
 
         $(".car2").css('animation-play-state', 'running');
         $(".car2").css('-webkit-animation-play-state', 'running');
@@ -416,8 +459,7 @@ function updatePipes()
 {
    clearInterval(loopPipeloop);
 
-   var topheight = 380;
-   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: ' + topheight + 'px;"></div></div>');
+   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: 600px;"></div></div>');
    $("#flyarea").append(newpipe);
    pipes.push(newpipe);
 }

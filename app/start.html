@@ -54,12 +54,22 @@
 		}
 	</style>
 	<script type="text/javascript" src = "./js/com.js"></script>
+	<script type="text/javascript" src="js/buzz.min.js"></script>
 	<script>
 		var TAGETURL = "index.html";
 		var TABLE_TOP_MULTI = 0.7;
 		var TABLE_LEFT_MULTI = 0.4;
 
+		//sound
+		var _soundGo = new buzz.sound("assets/sounds/start_game.ogg");
+		var _soundPlay = new buzz.sound("assets/sounds/start_play.ogg");
+
 		function init() {
+			//sound
+			_soundGo.stop();
+			_soundGo.play();
+			_soundGo.loop();
+			
 			document.getElementById("txt_input").value = "";
 			var tab_input = document.getElementById("tab_input");
 			tab_input.style.position = "absolute";
@@ -70,9 +80,18 @@
 		}
 
 		function btn_start() {
+			//var userName = document.getElementById("txt_input").value;
+			//var targetURL = TAGETURL + "?userName#" + userName;
+			_soundGo.stop();
+			_soundPlay.play();
+			//comLogin(userName, 0, null);
+			//window.open(targetURL, '_self');
+			setTimeout(direction_Page,2000);
+		}
+
+		function direction_Page() {
 			var userName = document.getElementById("txt_input").value;
 			var targetURL = TAGETURL + "?userName#" + userName;
-			comLogin(userName, 0, null);
 			window.open(targetURL, '_self');
 		}
 	</script>
