@@ -236,7 +236,18 @@ $(document).keydown(function(e){
    {
 	playerJump(currentNum);
    }
-   
+   else if( e.keyCode == 81)
+   {
+        playerJump(0);
+   }
+   else if( e.keyCode == 87)
+   {
+        playerJump(1);
+   }
+   else if( e.keyCode == 69)
+   {
+        playerJump(2);
+   }
 });
 
 var OldGX = 0;
