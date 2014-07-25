@@ -9,7 +9,10 @@
 		var TAGETURL = "start.html";
 		var DIV_TOP_MULTI = 0.5;
 		var DIV_LEFT_MULTI = 0.3;
+		var IMG_WIN_TOP_MULTI = 0.5;
+		var IMG_WIN_LEFT_MULTI = 0.3;
 		//var _Value = ["TonyChang", "TEST_2", "TEST_3"];
+		//var test_string = "?userName0#123&userName1#456&userName3#456";
 		var _Value = [];
 		var _color = ["green", "orange"];
 
@@ -20,24 +23,25 @@
 
 			//get rank result
 			_Value = parseParameter(document.URL);
+			//_Value = parseParameter(document.URL + test_string);
 
 			var idx_color = 0;
 			var result = "<table class=pricing-table><thead>"
 			var title, content, head;
 			head = "<tr class=plan>";
+			
 			for (var i=0; i<_Value.length;i++) {
 				if (i == 0) {
 					title = "<tr class=plan>"
 					content = "<tr class=price>"
-					head = head + "<td><img src=./img/win.png height=60 width=60></td>"
+					head = head + "<td></td>"
+					title = title + "<td class=" + _color[1] + "><H2>" + (i+1) + "</H2></td>";
+					content = content + "<td class=" + _color[1] + "><p>" + _Value[i].Value + "</p></td>";
 				}else {
 					head = head + "<td></td>";
+					title = title + "<td class=" + _color[0] + "><H2>" + (i+1) + "</H2></td>";
+					content = content + "<td class=" + _color[0] + "><p>" + _Value[i].Value + "</p></td>";
 				}
-				idx_color = i % _color.length;
-				title = title + "<td class=" + _color[idx_color] + "><H2>" + (i+1) + "</H2></td>";
-				content = content + "<td class=" + _color[idx_color] + "><p>" + _Value[i].Value + "</p></td>"
-				
-
 			}
 			if (title.length > 0) {
 				title = title + "</tr>";
@@ -55,6 +59,11 @@
 			//console.log(123);
 			div_main.style.top = window.innerHeight * DIV_TOP_MULTI + "px";
 			div_main.style.left = window.innerWidth * DIV_LEFT_MULTI + "px";
+
+			var img_win = document.getElementById("img_win");
+			img_win.style.position = "absolute";
+			img_win.style.top = window.innerHeight * IMG_WIN_TOP_MULTI + "px";
+			img_win.style.left = window.innerWidth * IMG_WIN_LEFT_MULTI + "px";			
 		}
 
 		function btn_restart() {
@@ -67,6 +76,7 @@
 <body onload = "init()">
 	<div id="div_main">
 	</div>
+	<img id="img_win" src=./img/win.png height=150 width=150>
 	<!--<button id="btn_restart" onfocus="this.blur()" onclick="btn_restart()">重新開始</button>-->
 </body>
 </html>
