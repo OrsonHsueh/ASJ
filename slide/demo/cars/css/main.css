@@ -1,18 +1,18 @@
 @-webkit-keyframes animSky {
    0% { background-position: 0px 100%; }
-   100% { background-position: -275px 100%; }
+   100% { background-position: -2134px 100%; }
 }
 @-moz-keyframes animSky {
    0% { background-position: 0px 100%; }
-   100% { background-position: -275px 100%; }
+   100% { background-position: -2134px 100%; }
 }
 @-o-keyframes animSky {
    0% { background-position: 0px 100%; }
-   100% { background-position: -275px 100%; }
+   100% { background-position: -2134px 100%; }
 }
 @keyframes animSky {
    0% { background-position: 0px 100%; }
-   100% { background-position: -275px 100%; }
+   100% { background-position: -2134px 100%; }
 }
 
 @-webkit-keyframes animPipe {
@@ -125,7 +125,7 @@ Screen - Game
 {
    position: absolute;
    bottom: 0;
-   height: 90%;
+   height: 78%;
    width: 100%;
 }
 
@@ -210,19 +210,19 @@ Screen - Game
 #player
 {
    left: 60px;
-   top: 0px;
+   top: 40px;
 }
 
 #player1
 {
    left: 60px;
-   top: 150px;
+   top: 200px;
 }
 
 #player2
 {
    left: 60px;
-   top: 300px;
+   top: 400px;
 }
 
 .car
