@@ -281,6 +281,10 @@ function screenClick()
    {
       playerJump(currentNum);
    }
+   else if(currentstate == states.CountScreen)
+   {
+      playerJump(currentNum);
+   }
    else if(currentstate == states.SplashScreen) /*press ready*/
    {
          currentstate = states.CountScreen;
