@@ -76,11 +76,13 @@ class GameServer(object):
       client.car = msg['car']
       client.pos = 0
       if len(self.clients) >= N_PLAYER:
-        self.others.append(client)
-        client.write_message(json.dumps({'act': 'lane', 'lane':-1}))
-        openInfo = [{'name': c.name, 'car': c.car} for c in self.clients]
-        client.write_message(json.dumps({'act':'open', 'info': openInfo}))
+        client.close()
         return
+#        self.others.append(client)
+#        client.write_message(json.dumps({'act': 'lane', 'lane':-1}))
+#        openInfo = [{'name': c.name, 'car': c.car} for c in self.clients]
+#        client.write_message(json.dumps({'act':'open', 'info': openInfo}))
+#        return
       if client not in self.clients:
         self.clients.append(client)
       client.write_message(json.dumps({'act': 'lane', 'lane': self.clients.index(client)}))
@@ -127,7 +129,7 @@ class GameServer(object):
             c.write_message(json.dumps({'act':'over', 'rank': rank}))
           self.reset()
     elif GAME_MODE == GAME_MODE_TIME and msg['act'] == 'over':
-      order = sorted(self.clients, lambda a: a.pos, reverse = True)
+      order = sorted(self.clients, lambda a, b: a.pos > b.pos, reverse = True)
       rank = [{'name': c.name, 'car': c.car, 'pos': c.pos} for c in order ]
       logger.info(rank)
       for c in self.clients:
