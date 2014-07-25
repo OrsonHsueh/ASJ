@@ -15,10 +15,14 @@ import sys
 GAME_MODE_TIME = 0
 GAME_MODE_SPEED = 1
 
-N_PLAYER = 2
+N_PLAYER = 3
 WAY_LENGTH = 100
 GAME_MODE = GAME_MODE_TIME
 logger = logging.getLogger()
+
+#game staus
+STANDBY = 0
+GO = 1
 
 GameServer = None
 
@@ -59,6 +63,7 @@ class GameServer(object):
     self.ready = []
     self.over = []
     self.startTime = 0
+    self.status = STANDBY
 
   def close(self, client):
     if client in self.clients:
@@ -105,11 +110,12 @@ class GameServer(object):
       if len(self.ready) == N_PLAYER:
         self.startTime = time.time()
         logger.info('go')
+        self.status = GO
         for c in self.clients:
           c.write_message(json.dumps({'act':'go'}))
         for c in self.others:
           c.write_message(json.dumps({'act':'go'}))
-    elif msg['act'] == 'pos':
+    elif msg['act'] == 'pos' and self.status == GO:
       client.pos += msg['pos']
       for c in self.clients:
         c.write_message(json.dumps({'act':'pos', 'pos': [c.pos for c in self.clients]}))
