@@ -10,7 +10,9 @@ var currentstate;
 var currentNum;
 
 var origwidth = 358.0;
-var origheight = 142.0;
+var origheight = 150.0;
+
+var peowidth = 101.0;
 
 var pipeheight = 350;
 var pipewidth = 52;
@@ -37,15 +39,12 @@ var loopPipeloop;
 var temp;
 var arrive;
 
+var userName;
 $(document).ready(function() {
    //get userName
    var arrParameter = [];
    arrParameter = parseParameter(document.URL);
-   var userName = getParaValue(arrParameter,"userName");
-   comLogin(userName, 0,function(num){
-      console.log("num = " + num );
-      currentNum = num;
-   });
+   userName = getParaValue(arrParameter,"userName");
 
    //start with the splash screen
    showSplash();
@@ -83,7 +82,7 @@ function startGame()
    currentstate = states.GameScreen;
 
    loopGameloop = setInterval(gameloop, 100);
-   loopPipeloop = setInterval(updatePipes, 15000);
+   loopPipeloop = setInterval(updatePipes, 6000);
    comSetMoveCallback(updatePlayerPosition);
 }
 
@@ -99,7 +98,7 @@ function updatePlayer(player)
    }
    else if(player.selector === "#player2") 
    {
-   	$(player).css({ left: 0, width: origwidth, height: origheight});
+   	$(player).css({ left: 0, width: peowidth, height: origheight});
    }
    else {
    	$(player).css({ left: 0, width: origwidth, height: origheight});
@@ -127,8 +126,6 @@ function updatePlayerPosition(lanenum,position){
 
    temp = arrive/maxposition;
 
-
-
    if(i==0){
       $("#player").css({ left: arrive, width: origwidth, height: origheight});
       if((position[0]-position[1])>10){
@@ -137,9 +134,9 @@ function updatePlayerPosition(lanenum,position){
          $("#player1").css({ left: temp*position[1]*0.7, width: origwidth, height: origheight});
       }
       if((position[0]-position[2])>10){
-         $("#player2").css({ left: -250, width: origwidth, height: origheight});
+         $("#player2").css({ left: -250, width: peowidth, height: origheight});
       } else {
-         $("#player2").css({ left: temp*position[2]*0.7, width: origwidth, height: origheight});
+         $("#player2").css({ left: temp*position[2]*0.7, width: peowidth, height: origheight});
       }
 
    } else if (i==1){
@@ -151,12 +148,12 @@ function updatePlayerPosition(lanenum,position){
          $("#player").css({ left: temp*position[0]*0.7, width: origwidth, height: origheight});
       }
        if((position[1]-position[2])>10){
-         $("#player2").css({ left: -250, width: origwidth, height: origheight});
+         $("#player2").css({ left: -250, width: peowidth, height: origheight});
       } else {
-         $("#player2").css({ left: temp*position[2]*0.7, width: origwidth, height: origheight});
+         $("#player2").css({ left: temp*position[2]*0.7, width: peowidth, height: origheight});
       }
    } else {
-      $("#player2").css({ left: arrive, width: origwidth, height: origheight});
+      $("#player2").css({ left: arrive, width: peowidth, height: origheight});
 
       if((position[2]-position[0])>10){
          $("#player").css({ left: -250, width: origwidth, height: origheight});
@@ -284,43 +281,87 @@ function screenClick()
    {
       playerJump(currentNum);
    }
-   else if(currentstate == states.SplashScreen)
+   else if(currentstate == states.CountScreen)
    {
-      currentstate = states.CountScreen;
-      $("#splash").stop();
-      $("#splash").transition({ opacity: 0 }, 500, 'ease');
+      playerJump(currentNum);
+   }
+   else if(currentstate == states.SplashScreen) /*press ready*/
+   {
+         currentstate = states.CountScreen;
+         $("#splash").stop();
+         $("#splash").transition({ opacity: 0 }, 500, 'ease');
+         comLogin(userName, 0,function(num){
+            console.log("num = " + num );
+            currentNum = num;
+         });
+        comSetGameOpenCallback( function(){
 
-      var stop=window.setInterval(function(){
-         count++;
-         console.log(count);
-         soundHit.play();
+           $("#trafficlight").show();
 
-         if(count==2){
-            console.log('stop');
-            window.clearInterval(stop);
-            count=0;
-          }
-      }, 1000);
+           var stop=window.setInterval(function(){
+               count++;
+               console.log(count);
+               $('.light'+count+'').find('.redlight').addClass('active');
 
-      $("#countdown").countdown360({
-         radius      : 60,
-         seconds     : 3,
-         fontColor   : '#FFFFFF',
-         autostart   : false,
-      	onComplete  : function () { 
-           $("#countdown").hide();
-           $("#goicon").show();
-           soundGo.play();
+               if(count<6){
+                 soundHit.play();
+               }
 
-           setTimeout(function() {
-             $("#goicon").hide();
-             comSetGoCallback();
-	     startGame();
+               if(count==6){
+                   console.log('stop');
+                   $('.greenlight').addClass('active');
+                   $('.redlight').removeClass('active');
+                   window.clearInterval(stop);
+                   count=0;
+
+                   $("#goicon").show();
+                   soundGo.play();
+                   setTimeout(function() {
+                      $('.greenlight').removeClass('active');
+                      $("#goicon").hide();
+                      $("#trafficlight").hide();
+                       comReady();
+                       comSetGoCallback(startGame);
+                       // startGame();
+                   }, 1000);
+               }
            }, 1000);
+        }
+      );
 
-           comReady();
-         }
-      }).start();
+      
+
+      // var stop=window.setInterval(function(){
+      //    count++;
+      //    console.log(count);
+      //    soundHit.play();
+
+      //    if(count==2){
+      //       console.log('stop');
+      //       window.clearInterval(stop);
+      //       count=0;
+      //     }
+      // }, 1000);
+
+      // $("#countdown").countdown360({
+      //    radius      : 60,
+      //    seconds     : 3,
+      //    fontColor   : '#FFFFFF',
+      //    autostart   : false,
+      // 	onComplete  : function () { 
+      //      $("#countdown").hide();
+      //      $("#goicon").show();
+      //      soundGo.play();
+
+      //      setTimeout(function() {
+      //        $("#goicon").hide();
+      //        comSetGoCallback();
+	     // startGame();
+      //      }, 1000);
+
+      //      comReady();
+      //    }
+      // }).start();
    }
 }
 

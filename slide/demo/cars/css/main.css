@@ -34,27 +34,27 @@
 
 @-webkit-keyframes animCar {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   to { background-position: 0px -600px; }
 }
 @keyframes animCar {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   to { background-position: 0px -600px; }
 }
 @-webkit-keyframes animCar1 {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   to { background-position: 0px -600px; }
 }
 @keyframes animCar1 {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   to { background-position: 0px -600px; }
 }
 @-webkit-keyframes animCar2 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   from { background-position: 0px 100%; }
+   to { background-position: -2626px 100%; }
 }
 @keyframes animCar2 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   from { background-position: 0px 100%; }
+   to { background-position: -2626px 100%; }
 }
 
 
@@ -133,11 +133,11 @@ Screen - Game
 {
    position: absolute;
    opacity: 0;
-   top: 75px;
-   left: 565px;
-   width: 188px;
-   height: 170px;
-   background-image: url('../assets/splash.png');
+   top: 50px;
+   left: 450px;
+   width: 500px;
+   height: 500px;
+   background-image: url('../assets/getready.png');
    background-repeat: no-repeat;
 }
 
@@ -151,12 +151,23 @@ Screen - Game
    height: 170px;
   
 }
+
+#trafficlight
+{
+   position: absolute;
+   /*opacity: 0;*/
+   margin-top: -80px;
+   left: 520px;
+   width: 250px;
+   height: 80px;
+   background-repeat: no-repeat;
+}
 #goicon
 {
    position: absolute;
    /*opacity: 0;*/
-   top: 75px;
-   left: 565px;
+   top: 100px;
+   left: 450px;
    width: 188px;
    height: 170px;
   
@@ -252,10 +263,10 @@ Screen - Game
    position: absolute;
    width: 34px;
    height: 24px;
-   background-image: url('../assets/car.png');
+   background-image: url('../assets/runing.png');
    background-repeat: no-repeat;
-   -webkit-animation: animCar2 300ms steps(4) infinite;
-   animation: animCar2 300ms steps(4) infinite;
+   -webkit-animation: animCar2 200ms steps(26) infinite;
+   animation: animCar2 200ms steps(26) infinite;
 }
 
 
@@ -268,8 +279,8 @@ Screen - Game
    height: 100%;
    z-index: 10;
 
-   -webkit-animation: animPipe 20000ms linear;
-   animation: animPipe 20000ms linear;
+   -webkit-animation: animPipe 40000ms linear;
+   animation: animPipe 40000ms linear;
 }
 
 .pipe_upper
