@@ -227,18 +227,11 @@ function gameloop() {
 //Handle space bar
 $(document).keydown(function(e){
    console.log("e.keyCode=" + e.keyCode);
-   if( e.keyCode == 81)
+   if( e.keyCode == 32)
    {
-	playerJump(0);
+	playerJump(currentNum);
    }
-   else if( e.keyCode == 87)
-   {
-	playerJump(1);
-   }
-   else if( e.keyCode == 69)
-   {
-	playerJump(2);
-   }
+   
 });
 
 var OldGX = 0;
