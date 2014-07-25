@@ -315,8 +315,8 @@ body {
 	background-image:url(../img/end.jpg);
 	background-repeat: no-repeat;
 	-moz-background-size: cover;
-	background-size: cover;*/
-	/*-moz-background-size:cover;
+	background-size: cover;
+	-moz-background-size:cover;
 	-webkit-background-size:cover;
 	-o-background-size:cover;
 	background-size:cover;
