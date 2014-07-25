@@ -107,6 +107,11 @@ function updatePlayer(player)
 function updatePlayerPosition(lanenum,position){
    console.log('update player position');
    // console.log(lanenum);
+   
+
+   $(".animated").css('animation-play-state', 'running');
+   $(".animated").css('-webkit-animation-play-state', 'running');
+
    console.log(position);
 
    var i = position.indexOf(Math.max.apply(Math, position));
@@ -227,17 +232,21 @@ function gameloop() {
 //Handle space bar
 $(document).keydown(function(e){
    console.log("e.keyCode=" + e.keyCode);
-   if( e.keyCode == 81)
+   if( e.keyCode == 32)
    {
-	playerJump(0);
+	playerJump(currentNum);
+   }
+   else if( e.keyCode == 81)
+   {
+        playerJump(0);
    }
    else if( e.keyCode == 87)
    {
-	playerJump(1);
+        playerJump(1);
    }
    else if( e.keyCode == 69)
    {
-	playerJump(2);
+        playerJump(2);
    }
 });
 
