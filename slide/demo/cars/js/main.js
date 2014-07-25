@@ -80,7 +80,7 @@ function startGame()
    currentstate = states.GameScreen;
 
    loopGameloop = setInterval(gameloop, 100);
-   // loopPipeloop = setInterval(updatePipes, 5000);
+   loopPipeloop = setInterval(updatePipes, 15000);
    comSetMoveCallback(updatePlayerPosition);
 }
 
@@ -456,8 +456,7 @@ function updatePipes()
 {
    clearInterval(loopPipeloop);
 
-   var topheight = 380;
-   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: ' + topheight + 'px;"></div></div>');
+   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: 600px;"></div></div>');
    $("#flyarea").append(newpipe);
    pipes.push(newpipe);
 }
