@@ -32,6 +32,7 @@ var loopGameloop;
 var loopPipeloop;
 
 var temp;
+var arrive;
 
 $(document).ready(function() {
    //get userName
@@ -79,7 +80,7 @@ function startGame()
    currentstate = states.GameScreen;
 
    loopGameloop = setInterval(gameloop, 100);
-   loopPipeloop = setInterval(updatePipes, 5000);
+   // loopPipeloop = setInterval(updatePipes, 5000);
    comSetMoveCallback(updatePlayerPosition);
 }
 
@@ -112,48 +113,57 @@ function updatePlayerPosition(lanenum,position){
    console.log(i);
    console.log(maxposition);
 
-   temp = 250/maxposition;
+
+   if(maxposition<5){
+      arrive = 100;
+   } else if (maxposition>5 && maxposition < 15){
+      arrive = 200;
+   } else if(maxposition>15 && maxposition < 25) {
+      arrive = 300;
+   }
+
+   temp = arrive/maxposition;
 
 
 
    if(i==0){
-      $("#player").css({ left: 290, width: origwidth, height: origheight});
+      $("#player").css({ left: arrive, width: origwidth, height: origheight});
       if((position[0]-position[1])>10){
-         $("#player1").css({ left: -50, width: origwidth, height: origheight});
+         $("#player1").css({ left: -250, width: origwidth, height: origheight});
       } else {
-         $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
+         $("#player1").css({ left: temp*position[1]*0.7, width: origwidth, height: origheight});
       }
       if((position[0]-position[2])>10){
-         $("#player2").css({ left: -50, width: origwidth, height: origheight});
+         $("#player2").css({ left: -250, width: origwidth, height: origheight});
       } else {
-         $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+         $("#player2").css({ left: temp*position[2]*0.7, width: origwidth, height: origheight});
       }
 
    } else if (i==1){
-      $("#player1").css({ left: 290, width: origwidth, height: origheight});
+      $("#player1").css({ left: arrive, width: origwidth, height: origheight});
 
       if((position[1]-position[0])>10){
-         $("#player").css({ left: -50, width: origwidth, height: origheight});
+         $("#player").css({ left: -250, width: origwidth, height: origheight});
       } else {
-         $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
+         $("#player").css({ left: temp*position[0]*0.7, width: origwidth, height: origheight});
       }
        if((position[1]-position[2])>10){
-         $("#player2").css({ left: -50, width: origwidth, height: origheight});
+         $("#player2").css({ left: -250, width: origwidth, height: origheight});
       } else {
-         $("#player2").css({ left: temp*position[2], width: origwidth, height: origheight});
+         $("#player2").css({ left: temp*position[2]*0.7, width: origwidth, height: origheight});
       }
    } else {
-      $("#player2").css({ left: 290, width: origwidth, height: origheight});
+      $("#player2").css({ left: arrive, width: origwidth, height: origheight});
 
       if((position[2]-position[0])>10){
-         $("#player").css({ left: -50, width: origwidth, height: origheight});
+         $("#player").css({ left: -250, width: origwidth, height: origheight});
       } else {
-         $("#player").css({ left: temp*position[0], width: origwidth, height: origheight});
+         $("#player").css({ left: temp*position[0]*0.7, width: origwidth, height: origheight});
       }
        if((position[2]-position[1])>10){
-         $("#player1").css({ left: -50, width: origwidth, height: origheight});
+         $("#player1").css({ left: -250, width: origwidth, height: origheight});
        } else {
-         $("#player1").css({ left: temp*position[1], width: origwidth, height: origheight});
+         $("#player1").css({ left: temp*position[1]*0.7, width: origwidth, height: origheight});
       }
    }
 
