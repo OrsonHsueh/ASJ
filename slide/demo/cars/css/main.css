@@ -34,19 +34,19 @@
 
 @-webkit-keyframes animCar {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   to { background-position: 0px -600px; }
 }
 @keyframes animCar {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   to { background-position: 0px -600px; }
 }
 @-webkit-keyframes animCar1 {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   to { background-position: 0px -600px; }
 }
 @keyframes animCar1 {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   to { background-position: 0px -600px; }
 }
 @-webkit-keyframes animCar2 {
    from { background-position: 0px 100%; }
