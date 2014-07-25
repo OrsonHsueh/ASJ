@@ -49,12 +49,12 @@
    to { background-position: 0px -568px; }
 }
 @-webkit-keyframes animCar2 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   from { background-position: 0px 100%; }
+   to { background-position: -2626px 100%; }
 }
 @keyframes animCar2 {
-   from { background-position: 0px 0px; }
-   to { background-position: 0px -568px; }
+   from { background-position: 0px 100%; }
+   to { background-position: -2626px 100%; }
 }
 
 
@@ -263,10 +263,10 @@ Screen - Game
    position: absolute;
    width: 34px;
    height: 24px;
-   background-image: url('../assets/car.png');
+   background-image: url('../assets/runing.png');
    background-repeat: no-repeat;
-   -webkit-animation: animCar2 300ms steps(4) infinite;
-   animation: animCar2 300ms steps(4) infinite;
+   -webkit-animation: animCar2 200ms steps(26) infinite;
+   animation: animCar2 200ms steps(26) infinite;
 }
 
 
@@ -279,8 +279,8 @@ Screen - Game
    height: 100%;
    z-index: 10;
 
-   -webkit-animation: animPipe 30000ms linear;
-   animation: animPipe 30000ms linear;
+   -webkit-animation: animPipe 40000ms linear;
+   animation: animPipe 40000ms linear;
 }
 
 .pipe_upper
