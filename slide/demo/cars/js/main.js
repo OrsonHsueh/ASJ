@@ -283,41 +283,71 @@ function screenClick()
    }
    else if(currentstate == states.SplashScreen)
    {
+      $("#trafficlight").show();
       currentstate = states.CountScreen;
       $("#splash").stop();
       $("#splash").transition({ opacity: 0 }, 500, 'ease');
 
       var stop=window.setInterval(function(){
-         count++;
-         console.log(count);
-         soundHit.play();
+          count++;
+          console.log(count);
+          $('.light'+count+'').find('.redlight').addClass('active');
 
-         if(count==2){
-            console.log('stop');
-            window.clearInterval(stop);
-            count=0;
+          if(count<6){
+            soundHit.play();
+          }
+
+          if(count==6){
+              console.log('stop');
+              $('.greenlight').addClass('active');
+              $('.redlight').removeClass('active');
+              window.clearInterval(stop);
+              count=0;
+
+              $("#goicon").show();
+              soundGo.play();
+              setTimeout(function() {
+                 $('.greenlight').removeClass('active');
+                 $("#goicon").hide();
+                 $("#trafficlight").hide();
+                 comReady();
+                  comSetGoCallback();
+                  startGame();
+              }, 1000);
           }
       }, 1000);
 
-      $("#countdown").countdown360({
-         radius      : 60,
-         seconds     : 3,
-         fontColor   : '#FFFFFF',
-         autostart   : false,
-      	onComplete  : function () { 
-           $("#countdown").hide();
-           $("#goicon").show();
-           soundGo.play();
+      // var stop=window.setInterval(function(){
+      //    count++;
+      //    console.log(count);
+      //    soundHit.play();
 
-           setTimeout(function() {
-             $("#goicon").hide();
-             comSetGoCallback();
-	     startGame();
-           }, 1000);
+      //    if(count==2){
+      //       console.log('stop');
+      //       window.clearInterval(stop);
+      //       count=0;
+      //     }
+      // }, 1000);
 
-           comReady();
-         }
-      }).start();
+      // $("#countdown").countdown360({
+      //    radius      : 60,
+      //    seconds     : 3,
+      //    fontColor   : '#FFFFFF',
+      //    autostart   : false,
+      // 	onComplete  : function () { 
+      //      $("#countdown").hide();
+      //      $("#goicon").show();
+      //      soundGo.play();
+
+      //      setTimeout(function() {
+      //        $("#goicon").hide();
+      //        comSetGoCallback();
+	     // startGame();
+      //      }, 1000);
+
+      //      comReady();
+      //    }
+      // }).start();
    }
 }
 
