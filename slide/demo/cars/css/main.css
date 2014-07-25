@@ -268,8 +268,8 @@ Screen - Game
    height: 100%;
    z-index: 10;
 
-   -webkit-animation: animPipe 20000ms linear;
-   animation: animPipe 20000ms linear;
+   -webkit-animation: animPipe 30000ms linear;
+   animation: animPipe 30000ms linear;
 }
 
 .pipe_upper

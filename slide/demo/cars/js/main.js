@@ -83,7 +83,7 @@ function startGame()
    currentstate = states.GameScreen;
 
    loopGameloop = setInterval(gameloop, 100);
-   loopPipeloop = setInterval(updatePipes, 15000);
+   loopPipeloop = setInterval(updatePipes, 10000);
    comSetMoveCallback(updatePlayerPosition);
 }
 
