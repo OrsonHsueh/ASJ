@@ -107,6 +107,11 @@ function updatePlayer(player)
 function updatePlayerPosition(lanenum,position){
    console.log('update player position');
    // console.log(lanenum);
+   
+
+   $(".animated").css('animation-play-state', 'running');
+   $(".animated").css('-webkit-animation-play-state', 'running');
+
    console.log(position);
 
    var i = position.indexOf(Math.max.apply(Math, position));
