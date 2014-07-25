@@ -286,39 +286,45 @@ function screenClick()
    }
    else if(currentstate == states.SplashScreen)
    {
-      $("#trafficlight").show();
-      currentstate = states.CountScreen;
-      $("#splash").stop();
-      $("#splash").transition({ opacity: 0 }, 500, 'ease');
+         currentstate = states.CountScreen;
+         $("#splash").stop();
+         $("#splash").transition({ opacity: 0 }, 500, 'ease');
+      comSetGameOpenCallback( function(){
 
-      var stop=window.setInterval(function(){
-          count++;
-          console.log(count);
-          $('.light'+count+'').find('.redlight').addClass('active');
+         $("#trafficlight").show();
 
-          if(count<6){
-            soundHit.play();
-          }
+         var stop=window.setInterval(function(){
+             count++;
+             console.log(count);
+             $('.light'+count+'').find('.redlight').addClass('active');
 
-          if(count==6){
-              console.log('stop');
-              $('.greenlight').addClass('active');
-              $('.redlight').removeClass('active');
-              window.clearInterval(stop);
-              count=0;
+             if(count<6){
+               soundHit.play();
+             }
 
-              $("#goicon").show();
-              soundGo.play();
-              setTimeout(function() {
-                 $('.greenlight').removeClass('active');
-                 $("#goicon").hide();
-                 $("#trafficlight").hide();
-                 comReady();
-                  comSetGoCallback();
-                  startGame();
-              }, 1000);
-          }
-      }, 1000);
+             if(count==6){
+                 console.log('stop');
+                 $('.greenlight').addClass('active');
+                 $('.redlight').removeClass('active');
+                 window.clearInterval(stop);
+                 count=0;
+
+                 $("#goicon").show();
+                 soundGo.play();
+                 setTimeout(function() {
+                    $('.greenlight').removeClass('active');
+                    $("#goicon").hide();
+                    $("#trafficlight").hide();
+                     comReady();
+                     comSetGoCallback(startGame);
+                     // startGame();
+                 }, 1000);
+             }
+         }, 1000);
+      }
+      );
+
+      
 
       // var stop=window.setInterval(function(){
       //    count++;
