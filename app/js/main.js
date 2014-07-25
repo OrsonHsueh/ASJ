@@ -7,6 +7,7 @@ var states = Object.freeze({
 });
 
 var currentstate;
+var currentNum;
 
 var origwidth = 358.0;
 var origheight = 142.0;
@@ -24,11 +25,17 @@ var soundDie = new buzz.sound("assets/sounds/sfx_die.ogg");
 var soundSwoosh = new buzz.sound("assets/sounds/sfx_swooshing.ogg");
 var hungry = new buzz.sound("assets/sounds/_3_m4a.mp3");
 var soundGo = new buzz.sound("assets/sounds/go.wav");
+var carSound = new buzz.sound("assets/sounds/carSound.mp3");
+var carSound1 = new buzz.sound("assets/sounds/carSound2.mp3");
+var carSound2 = new buzz.sound("assets/sounds/peopleRun.mp3");
 buzz.all().setVolume(volume);
 
 //loops1
 var loopGameloop;
 var loopPipeloop;
+
+var temp;
+var arrive;
 
 $(document).ready(function() {
    //get userName
@@ -36,7 +43,8 @@ $(document).ready(function() {
    arrParameter = parseParameter(document.URL);
    var userName = getParaValue(arrParameter,"userName");
    comLogin(userName, 0,function(num){
-      //callback num;
+      console.log("num = " + num );
+      currentNum = num;
    });
 
    //start with the splash screen
@@ -75,28 +83,98 @@ function startGame()
    currentstate = states.GameScreen;
 
    loopGameloop = setInterval(gameloop, 100);
-   loopPipeloop = setInterval(updatePipes, 5000);
-   comSetMoveCallback(updatePlayer);
+   loopPipeloop = setInterval(updatePipes, 10000);
+   comSetMoveCallback(updatePlayerPosition);
 }
 
-function updatePlayer(player,position)
+function updatePlayer(player)
 {
-   console.log(player);
-   console.log(position);
+   console.log('initial player position');
    //console.dir(player);
    //console.log("position="+player.selector);
   
    if(player.selector === "#player1") 
    {
-   	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	$(player).css({ left: 0, width: origwidth, height: origheight});
    }
    else if(player.selector === "#player2") 
    {
-   	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	$(player).css({ left: 0, width: origwidth, height: origheight});
    }
    else {
-   	$(player).css({ left: 60, width: origwidth, height: origheight});
+   	$(player).css({ left: 0, width: origwidth, height: origheight});
    }
+}
+function updatePlayerPosition(lanenum,position){
+   console.log('update player position');
+   // console.log(lanenum);
+   console.log(position);
+
+   var i = position.indexOf(Math.max.apply(Math, position));
+
+   var maxposition = Math.max.apply(null, position);
+   console.log(i);
+   console.log(maxposition);
+
+
+   if(maxposition<5){
+      arrive = 100;
+   } else if (maxposition>5 && maxposition < 15){
+      arrive = 200;
+   } else if(maxposition>15 && maxposition < 25) {
+      arrive = 300;
+   }
+
+   temp = arrive/maxposition;
+
+
+
+   if(i==0){
+      $("#player").css({ left: arrive, width: origwidth, height: origheight});
+      if((position[0]-position[1])>10){
+         $("#player1").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player1").css({ left: temp*position[1]*0.7, width: origwidth, height: origheight});
+      }
+      if((position[0]-position[2])>10){
+         $("#player2").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player2").css({ left: temp*position[2]*0.7, width: origwidth, height: origheight});
+      }
+
+   } else if (i==1){
+      $("#player1").css({ left: arrive, width: origwidth, height: origheight});
+
+      if((position[1]-position[0])>10){
+         $("#player").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player").css({ left: temp*position[0]*0.7, width: origwidth, height: origheight});
+      }
+       if((position[1]-position[2])>10){
+         $("#player2").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player2").css({ left: temp*position[2]*0.7, width: origwidth, height: origheight});
+      }
+   } else {
+      $("#player2").css({ left: arrive, width: origwidth, height: origheight});
+
+      if((position[2]-position[0])>10){
+         $("#player").css({ left: -250, width: origwidth, height: origheight});
+      } else {
+         $("#player").css({ left: temp*position[0]*0.7, width: origwidth, height: origheight});
+      }
+       if((position[2]-position[1])>10){
+         $("#player1").css({ left: -250, width: origwidth, height: origheight});
+       } else {
+         $("#player1").css({ left: temp*position[1]*0.7, width: origwidth, height: origheight});
+      }
+   }
+
+
+
+
+   
+
 }
 
 function checkEnd(box) {
@@ -152,81 +230,18 @@ function gameloop() {
 //Handle space bar
 $(document).keydown(function(e){
    console.log("e.keyCode=" + e.keyCode);
-
    if( e.keyCode == 81)
    {
-   	//play jump sound
-        comMove(1);
-   	soundJump.stop();
-   	soundJump.play();
-
-   	$(".car").css('animation-play-state', 'running');
-   	$(".car").css('-webkit-animation-play-state', 'running');
-        if( currentstate == states.GameScreen )
-	{
-   	  $(".sky").css('animation-play-state', 'running');
-   	  $(".sky").css('-webkit-animation-play-state', 'running');
-	}
-   	setTimeout(function() {
-     	  $(".car").css('animation-play-state', 'paused');
-     	  $(".car").css('-webkit-animation-play-state', 'paused');
-	  if( currentstate == states.GameScreen )
-       	  {
-   	    $(".sky").css('animation-play-state', 'paused');
-   	    $(".sky").css('-webkit-animation-play-state', 'paused');
-	  }
-   	}, 1000);
+	playerJump(0);
    }
    else if( e.keyCode == 87)
    {
-        //play jump sound
-        comMove(1);
-        soundJump.stop();
-        soundJump.play();
-
-        $(".car1").css('animation-play-state', 'running');
-        $(".car1").css('-webkit-animation-play-state', 'running');
-        if( currentstate == states.GameScreen )
-        {
-   	  $(".sky").css('animation-play-state', 'running');
-   	  $(".sky").css('-webkit-animation-play-state', 'running');
-	}
-        setTimeout(function() {
-          $(".car1").css('animation-play-state', 'paused');
-          $(".car1").css('-webkit-animation-play-state', 'paused');
-	  if( currentstate == states.GameScreen )
-          {
-   	    $(".sky").css('animation-play-state', 'paused');
-   	    $(".sky").css('-webkit-animation-play-state', 'paused');
-	  }
-        }, 1000);
+	playerJump(1);
    }
    else if( e.keyCode == 69)
    {
-        //play jump sound
-        comMove(1);
-        soundJump.stop();
-        soundJump.play();
-
-        $(".car2").css('animation-play-state', 'running');
-        $(".car2").css('-webkit-animation-play-state', 'running');
-        if( currentstate == states.GameScreen )
-        {
-   	  $(".sky").css('animation-play-state', 'running');
-   	  $(".sky").css('-webkit-animation-play-state', 'running');
-	}
-        setTimeout(function() {
-          $(".car2").css('animation-play-state', 'paused');
-          $(".car2").css('-webkit-animation-play-state', 'paused');
-	  if( currentstate == states.GameScreen )
-          {
-   	    $(".sky").css('animation-play-state', 'paused');
-   	    $(".sky").css('-webkit-animation-play-state', 'paused');
-	  }
-        }, 1000);
+	playerJump(2);
    }
-
-
 });
 
 var OldGX = 0;
@@ -267,60 +282,152 @@ function screenClick()
    var count = 0;
    if(currentstate == states.GameScreen)
    {
-      //playerJump();
+      playerJump(currentNum);
    }
    else if(currentstate == states.SplashScreen)
    {
+      $("#trafficlight").show();
       currentstate = states.CountScreen;
       $("#splash").stop();
       $("#splash").transition({ opacity: 0 }, 500, 'ease');
 
       var stop=window.setInterval(function(){
-         count++;
-         console.log(count);
-         soundHit.play();
+          count++;
+          console.log(count);
+          $('.light'+count+'').find('.redlight').addClass('active');
 
-         if(count==2){
-            console.log('stop');
-            window.clearInterval(stop);
-            count=0;
+          if(count<6){
+            soundHit.play();
+          }
+
+          if(count==6){
+              console.log('stop');
+              $('.greenlight').addClass('active');
+              $('.redlight').removeClass('active');
+              window.clearInterval(stop);
+              count=0;
+
+              $("#goicon").show();
+              soundGo.play();
+              setTimeout(function() {
+                 $('.greenlight').removeClass('active');
+                 $("#goicon").hide();
+                 $("#trafficlight").hide();
+                 comReady();
+                  comSetGoCallback();
+                  startGame();
+              }, 1000);
           }
       }, 1000);
 
-      $("#countdown").countdown360({
-         radius      : 60,
-         seconds     : 3,
-         fontColor   : '#FFFFFF',
-         autostart   : false,
-      	onComplete  : function () { 
-           $("#countdown").hide();
-           $("#goicon").show();
-           soundGo.play();
+      // var stop=window.setInterval(function(){
+      //    count++;
+      //    console.log(count);
+      //    soundHit.play();
 
-           setTimeout(function() {
-             $("#goicon").hide();
-           }, 1000);
+      //    if(count==2){
+      //       console.log('stop');
+      //       window.clearInterval(stop);
+      //       count=0;
+      //     }
+      // }, 1000);
 
-           comReady();
-           comSetGoCallback(startGame);
-         }
-      }).start();
+      // $("#countdown").countdown360({
+      //    radius      : 60,
+      //    seconds     : 3,
+      //    fontColor   : '#FFFFFF',
+      //    autostart   : false,
+      // 	onComplete  : function () { 
+      //      $("#countdown").hide();
+      //      $("#goicon").show();
+      //      soundGo.play();
+
+      //      setTimeout(function() {
+      //        $("#goicon").hide();
+      //        comSetGoCallback();
+	     // startGame();
+      //      }, 1000);
+
+      //      comReady();
+      //    }
+      // }).start();
    }
 }
 
-function playerJump()
+function playerJump(num)
 {
-   //play jump sound
-   soundJump.stop();
-   soundJump.play();
+   if( num == 0)
+   {
+   	//play jump sound
+        comMove(1);
+   	carSound.stop();
+   	carSound.play();
 
-   $(".animated").css('animation-play-state', 'running');
-   $(".animated").css('-webkit-animation-play-state', 'running');
-   setTimeout(function() { 
-     $(".animated").css('animation-play-state', 'paused');
-     $(".animated").css('-webkit-animation-play-state', 'paused');
-   }, 2000);
+   	$(".car").css('animation-play-state', 'running');
+   	$(".car").css('-webkit-animation-play-state', 'running');
+        if( currentstate == states.GameScreen )
+	{
+   	  $(".sky").css('animation-play-state', 'running');
+   	  $(".sky").css('-webkit-animation-play-state', 'running');
+	}
+   	setTimeout(function() {
+     	  $(".car").css('animation-play-state', 'paused');
+     	  $(".car").css('-webkit-animation-play-state', 'paused');
+	  if( currentstate == states.GameScreen )
+       	  {
+   	    $(".sky").css('animation-play-state', 'paused');
+   	    $(".sky").css('-webkit-animation-play-state', 'paused');
+	  }
+   	}, 1000);
+   }
+   else if( num == 1 )
+   {
+        //play jump sound
+        comMove(1);
+   	carSound1.stop();
+   	carSound1.play();
 
+        $(".car1").css('animation-play-state', 'running');
+        $(".car1").css('-webkit-animation-play-state', 'running');
+        if( currentstate == states.GameScreen )
+        {
+   	  $(".sky").css('animation-play-state', 'running');
+   	  $(".sky").css('-webkit-animation-play-state', 'running');
+	}
+        setTimeout(function() {
+          $(".car1").css('animation-play-state', 'paused');
+          $(".car1").css('-webkit-animation-play-state', 'paused');
+	  if( currentstate == states.GameScreen )
+          {
+   	    $(".sky").css('animation-play-state', 'paused');
+   	    $(".sky").css('-webkit-animation-play-state', 'paused');
+	  }
+        }, 1000);
+   }
+   else if( num == 2 )
+   {
+        //play jump sound
+        comMove(1);
+   	carSound2.stop();
+   	carSound2.play();
+
+        $(".car2").css('animation-play-state', 'running');
+        $(".car2").css('-webkit-animation-play-state', 'running');
+        if( currentstate == states.GameScreen )
+        {
+   	  $(".sky").css('animation-play-state', 'running');
+   	  $(".sky").css('-webkit-animation-play-state', 'running');
+	}
+        setTimeout(function() {
+          $(".car2").css('animation-play-state', 'paused');
+          $(".car2").css('-webkit-animation-play-state', 'paused');
+	  if( currentstate == states.GameScreen )
+          {
+   	    $(".sky").css('animation-play-state', 'paused');
+   	    $(".sky").css('-webkit-animation-play-state', 'paused');
+	  }
+        }, 1000);
+   }
 }
 
 function playerDead()
@@ -338,28 +445,31 @@ function playerDead()
    loopGameloop = null;
    loopPipeloop = null;
 
-   //mobile browsers don't support buzz bindOnce event
-   if(isIncompatible.any())
-   {
-      //skip right to showing score
-      showScore();
-   }
-   else
-   {
-      //play the hit sound (then the dead sound) and then show score
-      soundHit.play().bindOnce("ended", function() {
-         soundDie.play().bindOnce("ended", function() {
-            showScore();
-         });
-      });
-   }
+
+   comSetGameOverCallback(
+       function(result){
+         console.log(result);
+         //mobile browsers don't support buzz bindOnce event
+         if(isIncompatible.any())
+         {
+            //skip right to showing score
+            showScore(result);
+         }
+         else
+         {
+            //play the hit sound (then the dead sound) and then show score
+            soundHit.play().bindOnce("ended", function() {
+               soundDie.play().bindOnce("ended", function() {
+                  showScore(result);
+               });
+            });
+         }
+       });
+   comGameOver();
 }
 
-function showScore()
+function showScore(result)
 {
-   //direct end.html
-   var result = [{'name': 'tony1', 'car': 0, 'pos': 0}, {'name': 'tony2', 'car': 0, 'pos': 1},
-   {'name': 'tony3', 'car': 0, 'pos': 0}];
    var parmString = "";
    //alert(result.length);
    for (var i=0; i<result.length; i++) {
@@ -379,8 +489,7 @@ function updatePipes()
 {
    clearInterval(loopPipeloop);
 
-   var topheight = 380;
-   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: ' + topheight + 'px;"></div></div>');
+   var newpipe = $('<div class="pipe animated"><div class="pipe_upper" style="height: 600px;"></div></div>');
    $("#flyarea").append(newpipe);
    pipes.push(newpipe);
 }

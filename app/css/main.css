@@ -1,18 +1,18 @@
 @-webkit-keyframes animSky {
    0% { background-position: 0px 100%; }
-   100% { background-position: -275px 100%; }
+   100% { background-position: -2134px 100%; }
 }
 @-moz-keyframes animSky {
    0% { background-position: 0px 100%; }
-   100% { background-position: -275px 100%; }
+   100% { background-position: -2134px 100%; }
 }
 @-o-keyframes animSky {
    0% { background-position: 0px 100%; }
-   100% { background-position: -275px 100%; }
+   100% { background-position: -2134px 100%; }
 }
 @keyframes animSky {
    0% { background-position: 0px 100%; }
-   100% { background-position: -275px 100%; }
+   100% { background-position: -2134px 100%; }
 }
 
 @-webkit-keyframes animPipe {
@@ -112,7 +112,7 @@ Screen - Game
    top: 0;
    width: 100%;
    height: 100%;
-   background-image: url('../assets/sky.png');
+   background-image: url('../assets/sky.jpg');
    background-repeat: repeat-x;
    background-position: 0px 100%;
    background-color: #4ec0ca;
@@ -125,7 +125,7 @@ Screen - Game
 {
    position: absolute;
    bottom: 0;
-   height: 90%;
+   height: 78%;
    width: 100%;
 }
 
@@ -133,11 +133,11 @@ Screen - Game
 {
    position: absolute;
    opacity: 0;
-   top: 75px;
-   left: 565px;
-   width: 188px;
-   height: 170px;
-   background-image: url('../assets/splash.png');
+   top: 50px;
+   left: 450px;
+   width: 500px;
+   height: 500px;
+   background-image: url('../assets/getready.png');
    background-repeat: no-repeat;
 }
 
@@ -151,12 +151,23 @@ Screen - Game
    height: 170px;
   
 }
+
+#trafficlight
+{
+   position: absolute;
+   /*opacity: 0;*/
+   margin-top: -80px;
+   left: 520px;
+   width: 250px;
+   height: 80px;
+   background-repeat: no-repeat;
+}
 #goicon
 {
    position: absolute;
    /*opacity: 0;*/
-   top: 75px;
-   left: 565px;
+   top: 100px;
+   left: 450px;
    width: 188px;
    height: 170px;
   
@@ -210,19 +221,19 @@ Screen - Game
 #player
 {
    left: 60px;
-   top: 0px;
+   top: 1%;
 }
 
 #player1
 {
    left: 60px;
-   top: 150px;
+   top: 30%;
 }
 
 #player2
 {
    left: 60px;
-   top: 300px;
+   top: 70%;
 }
 
 .car
@@ -264,52 +275,20 @@ Screen - Game
 {
    position: absolute;
    left: -100px;
-   width: 52px;
+   width: 57px;
    height: 100%;
    z-index: 10;
 
-   -webkit-animation: animPipe 7500ms linear;
-   animation: animPipe 7500ms linear;
+   -webkit-animation: animPipe 30000ms linear;
+   animation: animPipe 30000ms linear;
 }
 
 .pipe_upper
 {
    position: absolute;
    top: 0;
-   width: 52px;
-   background-image: url('../assets/pipe.png');
-   background-repeat: repeat-y;
-   background-position: center;
-}
-
-.pipe_upper:after
-{
-   content: "";
-   position: absolute;
-   bottom: -25px;
-   width: 52px;
-   height: 63px;
-   background-image: url('../assets/pipe-down.png');
-}
-
-.pipe_lower
-{
-   position: absolute;
-   bottom: 0;
-   width: 52px;
-   background-image: url('../assets/pipe.png');
-   background-repeat: repeat-y;
-   background-position: center;
-}
-
-.pipe_lower:after
-{
-   content: "";
-   position: absolute;
-   top: -25px;
-   width: 52px;
-   height: 63px;
-   background-image: url('../assets/pipe-up.png');
+   width: 57px;
+   background-image: url('../assets/the-end.png');
 }
 
 #footer

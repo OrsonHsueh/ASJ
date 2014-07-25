@@ -8,11 +8,12 @@
       <!-- Style sheets -->
       <link href="css/reset.css" rel="stylesheet">
       <link href="css/main.css" rel="stylesheet">
+      <link href="js/traffic.css" rel="stylesheet">
    </head>
    <body>
       <div id="gamecontainer">
          <div id="gamescreen">
-            <div id="sky" class="animated">
+            <div id="sky" class="sky animated">
                <div id="flyarea">
                   <!-- This is the flying and pipe area container -->
                   <div id="player" class="car animated"></div>
@@ -20,9 +21,50 @@
                   <div id="player2" class="car2 animated"></div>
 
                   <div id="goicon" style="display: none" height="300" width="170"><img src="img/GO.png" /></div>
-                  <div id="countdown"></div>
+                  <div id='trafficlight' style="display: none">
+                      <div id="light" class="light1">
+                          <span id="orange"></span>
+                          <!-- <span id="green" class="greenlight"></span> -->
+                          <span id="green" class="greenlight"></span>
+                          <span class="redlight" id="red"></span>
+                          <span class="redlight" id="red"></span>
+                      </div>
+                      <div id="light" class="light2">
+                          <span id="orange"></span>
+                          <!-- <span id="green" class="greenlight"></span> -->
+                          <span id="green" class="greenlight"></span>
+                          <span class="redlight" id="red"></span>
+                          <span class="redlight" id="red"></span>
+                      </div>
+                      <div id="light" class="light3">
+                          <span id="orange"></span>
+                          <!-- <span id="green" class="greenlight"></span> -->
+                          <span id="green" class="greenlight"></span>
+                          <span class="redlight" id="red"></span>
+                          <span class="redlight" id="red"></span>
+                      </div>
+                      <div id="light" class="light4">
+                          <span id="orange"></span>
+                          <!-- <span id="green" class="greenlight"></span> -->
+                          <span id="green" class="greenlight"></span>
+                          <span class="redlight" id="red"></span>
+                          <span class="redlight" id="red"></span>
+                      </div>
+                      <div id="light" class="light5">
+                          <span id="orange"></span>
+                          <!-- <span id="green" class="greenlight"></span> -->
+                          <span id="green" class="greenlight"></span>
+                          <span class="redlight" id="red"></span>
+                          <span class="redlight" id="red"></span>
+                      </div>
+
+                      
+                  </div>
+                  <!-- <div id="countdown"></div> -->
                   
                   <div id="splash"></div>
+
+                 
                   
                   <div id="scoreboard">
                      <div id="highscore"></div>
@@ -40,6 +82,7 @@
       <script src="js/ParmUtil.js"></script>
       <script src="js/com.js"></script>
       <script src="js/main.js"></script>
+      <script src="js/traffic.js"></script>
 
    </body>
 </html>
