@@ -338,28 +338,31 @@ function playerDead()
    loopGameloop = null;
    loopPipeloop = null;
 
-   //mobile browsers don't support buzz bindOnce event
-   if(isIncompatible.any())
-   {
-      //skip right to showing score
-      showScore();
-   }
-   else
-   {
-      //play the hit sound (then the dead sound) and then show score
-      soundHit.play().bindOnce("ended", function() {
-         soundDie.play().bindOnce("ended", function() {
-            showScore();
-         });
-      });
-   }
+
+   comSetGameOverCallback(
+       function(result){
+         console.log(result);
+         //mobile browsers don't support buzz bindOnce event
+         if(isIncompatible.any())
+         {
+            //skip right to showing score
+            showScore(result);
+         }
+         else
+         {
+            //play the hit sound (then the dead sound) and then show score
+            soundHit.play().bindOnce("ended", function() {
+               soundDie.play().bindOnce("ended", function() {
+                  showScore(result);
+               });
+            });
+         }
+       });
+   comGameOver();
 }
 
-function showScore()
+function showScore(result)
 {
-   //direct end.html
-   var result = [{'name': 'tony1', 'car': 0, 'pos': 0}, {'name': 'tony2', 'car': 0, 'pos': 1},
-   {'name': 'tony3', 'car': 0, 'pos': 0}];
    var parmString = "";
    //alert(result.length);
    for (var i=0; i<result.length; i++) {
