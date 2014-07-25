@@ -3,7 +3,7 @@ var SOCKET = null;
  * 回傳一個代碼，代表在第幾賽道  **** 更新，用 callback 傳回 ****
  */
 function comLogin(name, car, callback){
-  SOCKET = new WebSocket("ws://10.62.46.48:20666/");
+  SOCKET = new WebSocket("ws://192.168.23.28:20666/");
   //SOCKET = new WebSocket("ws://127.0.0.1:20666/");
   SOCKET.onmessage = serverMsg;
   SOCKET.onopen = function(e){
@@ -54,6 +54,7 @@ function comGameOver(){
  * WebSocket 在這時會自動斷線
  * */
 function comSetGameOverCallback(callback){
+  console.log(callback);
   MSG_CALLBACKS.over = callback;
 }
 
@@ -89,6 +90,7 @@ var cmdHandlers = {
     }
   },
   'over': function(msg){
+    console.log(msg.rank);
     if(MSG_CALLBACKS.over != null){
       console.log(msg.rank);
       MSG_CALLBACKS.over(msg.rank);
